@@ -1,0 +1,16 @@
+{
+  "pdf_path": "/Users/bytedance/Downloads/PDF Public (DIN A4 quer), Edition of DIBA 540.1 NA2026-06a IP_DIBA CN MA-CN HU-CN Gen20x.i3 PremPlusPlus, 1, zh_CN.pdf",
+  "db_path": "car_knowledge.db",
+  "output_dir": "./output",
+  "test_result_path": "./output/test_results",
+  "queries_per_type": 20,
+  "image_extraction": {
+    "enabled": true,
+    "min_image_size": 100
+  },
+  "scoring": {
+    "integrated_reply_enabled": true,
+    "image_verification_enabled": true,
+    "similarity_threshold": 0.4
+  }
+}
