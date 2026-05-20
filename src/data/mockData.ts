@@ -28,6 +28,19 @@ export const mockIngredients: Ingredient[] = [
   { id: 'i25', name: '鱼肉', unit: '克', quantity: 500, inStock: 200 },
   { id: 'i26', name: '牛蛙', unit: '只', quantity: 5, inStock: 2 },
   { id: 'i27', name: '蒜蓉', unit: '克', quantity: 100, inStock: 50 },
+  { id: 'i28', name: '猪耳朵', unit: '个', quantity: 4, inStock: 0 },
+  { id: 'i29', name: '干豆腐', unit: '张', quantity: 20, inStock: 0 },
+  { id: 'i30', name: '花生米', unit: '克', quantity: 200, inStock: 0 },
+  { id: 'i31', name: '扇贝', unit: '个', quantity: 12, inStock: 0 },
+  { id: 'i32', name: '小龙虾', unit: '斤', quantity: 3, inStock: 0 },
+  { id: 'i33', name: '三文鱼', unit: '克', quantity: 400, inStock: 0 },
+  { id: 'i34', name: '鸭头', unit: '个', quantity: 8, inStock: 0 },
+  { id: 'i35', name: '羊排', unit: '块', quantity: 6, inStock: 0 },
+  { id: 'i36', name: '意面', unit: '包', quantity: 2, inStock: 0 },
+  { id: 'i37', name: '大樱桃', unit: '斤', quantity: 2, inStock: 0 },
+  { id: 'i38', name: '串茄', unit: '串', quantity: 10, inStock: 0 },
+  { id: 'i39', name: '苹果汁', unit: '瓶', quantity: 2, inStock: 0 },
+  { id: 'i40', name: '鲜打扎啤', unit: '升', quantity: 5, inStock: 0 },
 ];
 
 export const mockDishes: Dish[] = [
@@ -214,6 +227,130 @@ export const mockDishes: Dish[] = [
       { ingredientId: 'i17', amount: 8 },
     ],
   },
+  {
+    id: 'd15',
+    name: '卤菜拼盘',
+    category: '凉菜',
+    description: '猪耳朵、干豆腐、花生米等卤制拼盘，下酒必备',
+    imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Chinese%20braised%20pork%20ear%20platter%20with%20dried%20tofu%20and%20peanuts%20on%20white%20plate&image_size=landscape_4_3',
+    ingredients: [
+      { ingredientId: 'i28', amount: 2 },
+      { ingredientId: 'i29', amount: 10 },
+      { ingredientId: 'i30', amount: 100 },
+      { ingredientId: 'i27', amount: 20 },
+    ],
+  },
+  {
+    id: 'd16',
+    name: '蒜蓉粉丝扇贝',
+    category: '海鲜',
+    description: '新鲜扇贝配上蒜蓉粉丝，鲜香四溢',
+    imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=steamed%20scallops%20with%20garlic%20and%20vermicelli%20on%20plate&image_size=landscape_4_3',
+    ingredients: [
+      { ingredientId: 'i31', amount: 6 },
+      { ingredientId: 'i24', amount: 1 },
+      { ingredientId: 'i27', amount: 40 },
+      { ingredientId: 'i18', amount: 20 },
+      { ingredientId: 'i15', amount: 1 },
+    ],
+  },
+  {
+    id: 'd17',
+    name: '麻辣小龙虾',
+    category: '海鲜',
+    description: '麻辣鲜香，肉质Q弹，夏日必备',
+    imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=spicy%20mala%20crawfish%20lobster%20on%20plate%20Chinese%20style&image_size=landscape_4_3',
+    ingredients: [
+      { ingredientId: 'i32', amount: 2 },
+      { ingredientId: 'i15', amount: 2 },
+      { ingredientId: 'i16', amount: 5 },
+      { ingredientId: 'i17', amount: 8 },
+      { ingredientId: 'i19', amount: 30 },
+    ],
+  },
+  {
+    id: 'd18',
+    name: '厚切三文鱼',
+    category: '海鲜',
+    description: '挪威进口三文鱼，厚切刺身，入口即化',
+    imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=thick%20cut%20salmon%20sashimi%20on%20white%20plate%20fresh%20Japanese%20style&image_size=landscape_4_3',
+    ingredients: [
+      { ingredientId: 'i33', amount: 300 },
+    ],
+  },
+  {
+    id: 'd19',
+    name: '赣州鸭头',
+    category: '凉菜',
+    description: '江西赣州特色，香辣入味，越啃越香（网购成品）',
+    imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=spicy%20braised%20duck%20head%20Chinese%20Ganzhou%20style%20on%20plate&image_size=landscape_4_3',
+    ingredients: [
+      { ingredientId: 'i34', amount: 4 },
+    ],
+  },
+  {
+    id: 'd20',
+    name: '香煎羊排',
+    category: '西餐',
+    description: '法式香煎羊排，外焦里嫩，香气扑鼻',
+    imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=pan%20seared%20lamb%20chops%20with%20herbs%20on%20white%20plate&image_size=landscape_4_3',
+    ingredients: [
+      { ingredientId: 'i35', amount: 3 },
+      { ingredientId: 'i15', amount: 1 },
+      { ingredientId: 'i16', amount: 2 },
+      { ingredientId: 'i20', amount: 5 },
+    ],
+  },
+  {
+    id: 'd21',
+    name: '空客意面',
+    category: '西餐',
+    description: '网购成品意面，只需一包',
+    imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=spaghetti%20bolognese%20with%20meat%20sauce%20on%20plate%20Italian%20style&image_size=landscape_4_3',
+    ingredients: [
+      { ingredientId: 'i36', amount: 1 },
+    ],
+  },
+  {
+    id: 'd22',
+    name: '大樱桃',
+    category: '水果',
+    description: '新鲜大樱桃，颗颗饱满，香甜多汁',
+    imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=fresh%20red%20cherries%20in%20bowl%20water%20droplets&image_size=landscape_4_3',
+    ingredients: [
+      { ingredientId: 'i37', amount: 1 },
+    ],
+  },
+  {
+    id: 'd23',
+    name: '串茄',
+    category: '水果',
+    description: '迷你小番茄，酸甜可口，健康美味',
+    imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cherry%20tomatoes%20on%20vine%20fresh%20red%20mini%20tomatoes&image_size=landscape_4_3',
+    ingredients: [
+      { ingredientId: 'i38', amount: 5 },
+    ],
+  },
+  {
+    id: 'd24',
+    name: '苹果汁',
+    category: '酒水',
+    description: '鲜榨苹果汁，清爽解渴',
+    imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=fresh%20apple%20juice%20in%20glass%20with%20apple%20slices&image_size=landscape_4_3',
+    ingredients: [
+      { ingredientId: 'i39', amount: 1 },
+    ],
+  },
+  {
+    id: 'd25',
+    name: '鲜打扎啤',
+    category: '酒水',
+    description: '新鲜现打扎啤，泡沫丰富，麦香浓郁',
+    imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=fresh%20draft%20beer%20in%20glass%20mug%20with%20foam%20bubbles&image_size=landscape_4_3',
+    ingredients: [
+      { ingredientId: 'i40', amount: 2 },
+    ],
+  },
 ];
 
 export const mockOrders: Order[] = [
@@ -244,9 +381,9 @@ export const mockOrders: Order[] = [
   },
 ];
 
-export const mockUsers: User[] = [
-  { id: 'u1', name: '赵梓涵', role: 'wife', wechatId: null },
-  { id: 'u2', name: '谢一鸣', role: 'husband', wechatId: null },
+export const mockUsers = [
+  { id: 'u1', name: '赵梓涵', role: 'wife', wechatId: 'pushplus_configured' },
+  { id: 'u2', name: '谢一鸣', role: 'husband', wechatId: 'pushplus_configured' },
 ];
 
 export const categories = ['全部', '家常菜', '川菜', '粤菜', '凉菜', '特色菜', '时蔬', '蒸菜', '火锅'];

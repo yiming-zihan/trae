@@ -48,7 +48,7 @@ export interface User {
 export interface FridgeItem {
   id: string;
   name: string;
-  category: '冷藏' | '冷冻' | '常温' | '其他';
+  category: '冷藏' | '冷冻' | '常温' | '其他' | '卤味' | '海鲜' | '水果' | '酒水';
   unit: string;
   quantity: number;
   expiryDate?: string;

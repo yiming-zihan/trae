@@ -27,6 +27,10 @@ const categoryIcons = {
   '冷冻': Thermometer,
   '常温': Sun,
   '其他': Package,
+  '卤味': Package,
+  '海鲜': Package,
+  '水果': Package,
+  '酒水': Package,
 };
 
 const categoryColors = {
@@ -34,6 +38,10 @@ const categoryColors = {
   '冷冻': 'text-cyan-400 bg-cyan-500/20',
   '常温': 'text-yellow-400 bg-yellow-500/20',
   '其他': 'text-gray-400 bg-gray-500/20',
+  '卤味': 'text-orange-400 bg-orange-500/20',
+  '海鲜': 'text-blue-500 bg-blue-600/20',
+  '水果': 'text-pink-400 bg-pink-500/20',
+  '酒水': 'text-green-400 bg-green-500/20',
 };
 
 export function FridgePage() {
@@ -49,7 +57,7 @@ export function FridgePage() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingItem, setEditingItem] = useState<FridgeItem | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<'全部' | '冷藏' | '冷冻' | '常温' | '其他'>('全部');
+  const [selectedCategory, setSelectedCategory] = useState<'全部' | '冷藏' | '冷冻' | '常温' | '其他' | '卤味' | '海鲜' | '水果' | '酒水'>('全部');
   const [sortBy, setSortBy] = useState<'name' | 'expiry' | 'added'>('added');
   const [showSyncSuccess, setShowSyncSuccess] = useState(false);
   const [syncCount, setSyncCount] = useState(0);
@@ -221,6 +229,10 @@ export function FridgePage() {
                 <option value="冷冻">冷冻</option>
                 <option value="常温">常温</option>
                 <option value="其他">其他</option>
+                <option value="卤味">卤味</option>
+                <option value="海鲜">海鲜</option>
+                <option value="水果">水果</option>
+                <option value="酒水">酒水</option>
               </select>
               <select
                 value={sortBy}

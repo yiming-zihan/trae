@@ -127,92 +127,391 @@ const defaultFridgeItems: FridgeItem[] = [
     quantity: 4,
     addedDate: new Date().toISOString().split('T')[0],
     ingredientId: 'i9'
+  },
+  {
+    id: 'f11',
+    name: '鸡胸肉',
+    category: '冷冻',
+    unit: '克',
+    quantity: 300,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i1'
+  },
+  {
+    id: 'f12',
+    name: '胡萝卜',
+    category: '冷藏',
+    unit: '根',
+    quantity: 6,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i3'
+  },
+  {
+    id: 'f13',
+    name: '土豆',
+    category: '常温',
+    unit: '个',
+    quantity: 4,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i4'
+  },
+  {
+    id: 'f14',
+    name: '虾仁',
+    category: '冷冻',
+    unit: '克',
+    quantity: 150,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i8'
+  },
+  {
+    id: 'f15',
+    name: '青椒',
+    category: '冷藏',
+    unit: '个',
+    quantity: 4,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i10'
+  },
+  {
+    id: 'f16',
+    name: '白菜',
+    category: '冷藏',
+    unit: '颗',
+    quantity: 1,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i12'
+  },
+  {
+    id: 'f17',
+    name: '木耳',
+    category: '常温',
+    unit: '克',
+    quantity: 50,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i13'
+  },
+  {
+    id: 'f18',
+    name: '香菇',
+    category: '冷藏',
+    unit: '朵',
+    quantity: 12,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i14'
+  },
+  {
+    id: 'f19',
+    name: '料酒',
+    category: '常温',
+    unit: '毫升',
+    quantity: 200,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i19'
+  },
+  {
+    id: 'f20',
+    name: '盐',
+    category: '常温',
+    unit: '克',
+    quantity: 150,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i20'
+  },
+  {
+    id: 'f21',
+    name: '杏鲍菇',
+    category: '冷藏',
+    unit: '个',
+    quantity: 3,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i21'
+  },
+  {
+    id: 'f22',
+    name: '油麦菜',
+    category: '冷藏',
+    unit: '棵',
+    quantity: 2,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i22'
+  },
+  {
+    id: 'f23',
+    name: '娃娃菜',
+    category: '冷藏',
+    unit: '棵',
+    quantity: 1,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i23'
+  },
+  {
+    id: 'f24',
+    name: '粉丝',
+    category: '常温',
+    unit: '包',
+    quantity: 5,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i24'
+  },
+  {
+    id: 'f25',
+    name: '鱼肉',
+    category: '冷冻',
+    unit: '克',
+    quantity: 200,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i25'
+  },
+  {
+    id: 'f26',
+    name: '牛蛙',
+    category: '冷冻',
+    unit: '只',
+    quantity: 2,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i26'
+  },
+  {
+    id: 'f27',
+    name: '蒜蓉',
+    category: '冷藏',
+    unit: '克',
+    quantity: 50,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i27'
+  },
+  {
+    id: 'f28',
+    name: '猪耳朵',
+    category: '卤味',
+    unit: '个',
+    quantity: 2,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i28'
+  },
+  {
+    id: 'f29',
+    name: '干豆腐',
+    category: '冷藏',
+    unit: '张',
+    quantity: 10,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i29'
+  },
+  {
+    id: 'f30',
+    name: '花生米',
+    category: '常温',
+    unit: '克',
+    quantity: 100,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i30'
+  },
+  {
+    id: 'f31',
+    name: '扇贝',
+    category: '海鲜',
+    unit: '个',
+    quantity: 6,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i31'
+  },
+  {
+    id: 'f32',
+    name: '小龙虾',
+    category: '海鲜',
+    unit: '斤',
+    quantity: 2,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i32'
+  },
+  {
+    id: 'f33',
+    name: '三文鱼',
+    category: '海鲜',
+    unit: '克',
+    quantity: 300,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i33'
+  },
+  {
+    id: 'f34',
+    name: '鸭头',
+    category: '卤味',
+    unit: '个',
+    quantity: 4,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i34'
+  },
+  {
+    id: 'f35',
+    name: '羊排',
+    category: '冷冻',
+    unit: '块',
+    quantity: 3,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i35'
+  },
+  {
+    id: 'f36',
+    name: '意面',
+    category: '常温',
+    unit: '包',
+    quantity: 1,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i36'
+  },
+  {
+    id: 'f37',
+    name: '大樱桃',
+    category: '水果',
+    unit: '斤',
+    quantity: 1,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i37'
+  },
+  {
+    id: 'f38',
+    name: '串茄',
+    category: '水果',
+    unit: '串',
+    quantity: 5,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i38'
+  },
+  {
+    id: 'f39',
+    name: '苹果汁',
+    category: '酒水',
+    unit: '瓶',
+    quantity: 1,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i39'
+  },
+  {
+    id: 'f40',
+    name: '鲜打扎啤',
+    category: '酒水',
+    unit: '升',
+    quantity: 2,
+    addedDate: new Date().toISOString().split('T')[0],
+    ingredientId: 'i40'
   }
 ];
 
-export const useMenuStore = create<MenuStore>((set, get) => ({
-  dishes: mockDishes,
-  ingredients: mockIngredients,
-  orders: mockOrders,
-  users: mockUsers,
-  currentUser: mockUsers[0],
-  cart: [],
-  selectedDate: new Date().toISOString().split('T')[0],
-  searchQuery: '',
-  selectedCategory: '全部',
-  fridgeItems: defaultFridgeItems,
-
-  setCurrentUser: (user) => set({ currentUser: user }),
-
-  addToCart: (dish) =>
-    set((state) => {
-      const existing = state.cart.find((item) => item.dish.id === dish.id);
-      if (existing) {
-        return {
-          cart: state.cart.map((item) =>
-            item.dish.id === dish.id ? { ...item, quantity: item.quantity + 1 } : item
-          ),
-        };
-      }
-      return { cart: [...state.cart, { dish, quantity: 1 }] };
-    }),
-
-  removeFromCart: (dishId) =>
-    set((state) => ({
-      cart: state.cart.filter((item) => item.dish.id !== dishId),
-    })),
-
-  updateCartQuantity: (dishId, quantity) =>
-    set((state) => {
-      if (quantity <= 0) {
-        return { cart: state.cart.filter((item) => item.dish.id !== dishId) };
-      }
-      return {
-        cart: state.cart.map((item) =>
-          item.dish.id === dishId ? { ...item, quantity } : item
-        ),
-      };
-    }),
-
-  clearCart: () => set({ cart: [] }),
-
-  setSelectedDate: (date) => set({ selectedDate: date }),
-
-  setSearchQuery: (query) => set({ searchQuery: query }),
-
-  setSelectedCategory: (category) => set({ selectedCategory: category }),
-
-  createOrder: async (items, date) => {
-    if (items.length === 0) return null;
-
-    const newOrder: Order = {
-      id: `o${Date.now()}`,
-      userId: get().currentUser?.id || 'u1',
-      status: 'pending',
-      targetDate: date,
-      items: items.map((item) => ({
-        id: `oi${Date.now()}-${item.dish.id}`,
-        dishId: item.dish.id,
-        quantity: item.quantity,
-      })),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+export const useMenuStore = create<MenuStore>((set, get) => {
+  // 自动初始化 PushPlus 配置
+  const initNotificationConfigs = () => {
+    const zihanConfig = {
+      service: 'pushplus',
+      token: '150357f7830e47099fa0605f516659af',
+      configTime: new Date().toISOString()
+    };
+    const yimingConfig = {
+      service: 'pushplus',
+      token: 'd848b9e85ae04afca1b04f4e7a943308',
+      configTime: new Date().toISOString()
     };
 
-    set((state) => ({ orders: [newOrder, ...state.orders] }));
-    get().clearCart();
+    if (!localStorage.getItem('notification_config_u1')) {
+      localStorage.setItem('notification_config_u1', JSON.stringify(zihanConfig));
+    }
+    if (!localStorage.getItem('notification_config_u2')) {
+      localStorage.setItem('notification_config_u2', JSON.stringify(yimingConfig));
+    }
+  };
 
-    const { currentUser, sendNotification } = get();
+  initNotificationConfigs();
 
-    const orderDetails = items.map(item => 
-      `• ${item.dish.name} × ${item.quantity}`
-    ).join('\n');
+  const initialUsers: MenuStore['users'] = [
+    { id: 'u1', name: '赵梓涵', role: 'wife', wechatId: 'pushplus_configured' },
+    { id: 'u2', name: '谢一鸣', role: 'husband', wechatId: 'pushplus_configured' },
+  ];
 
-    const notificationTitle = currentUser?.id === 'u1'
-      ? '🍳 新的点菜通知' 
-      : '✅ 订单已提交';
+  return {
+    dishes: mockDishes,
+    ingredients: mockIngredients,
+    orders: mockOrders,
+    users: initialUsers,
+    currentUser: initialUsers[0],
+    cart: [],
+    selectedDate: new Date().toISOString().split('T')[0],
+    searchQuery: '',
+    selectedCategory: '全部',
+    fridgeItems: defaultFridgeItems,
 
-    const notificationContent = `
+    setCurrentUser: (user) => set({ currentUser: user }),
+
+    addToCart: (dish) =>
+      set((state) => {
+        const existing = state.cart.find((item) => item.dish.id === dish.id);
+        if (existing) {
+          return {
+            cart: state.cart.map((item) =>
+              item.dish.id === dish.id ? { ...item, quantity: item.quantity + 1 } : item
+            ),
+          };
+        }
+        return { cart: [...state.cart, { dish, quantity: 1 }] };
+      }),
+
+    removeFromCart: (dishId) =>
+      set((state) => ({
+        cart: state.cart.filter((item) => item.dish.id !== dishId),
+      })),
+
+    updateCartQuantity: (dishId, quantity) =>
+      set((state) => {
+        if (quantity <= 0) {
+          return { cart: state.cart.filter((item) => item.dish.id !== dishId) };
+        }
+        return {
+          cart: state.cart.map((item) =>
+            item.dish.id === dishId ? { ...item, quantity } : item
+          ),
+        };
+      }),
+
+    clearCart: () => set({ cart: [] }),
+
+    setSelectedDate: (date) => set({ selectedDate: date }),
+
+    setSearchQuery: (query) => set({ searchQuery: query }),
+
+    setSelectedCategory: (category) => set({ selectedCategory: category }),
+
+    createOrder: async (items, date) => {
+      if (items.length === 0) return null;
+
+      const newOrder: Order = {
+        id: `o${Date.now()}`,
+        userId: get().currentUser?.id || 'u1',
+        status: 'pending',
+        targetDate: date,
+        items: items.map((item) => ({
+          id: `oi${Date.now()}-${item.dish.id}`,
+          dishId: item.dish.id,
+          quantity: item.quantity,
+        })),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      set((state) => ({ orders: [newOrder, ...state.orders] }));
+      get().clearCart();
+
+      const { currentUser, sendNotification } = get();
+
+      const orderDetails = items.map(item => 
+        `• ${item.dish.name} × ${item.quantity}`
+      ).join('\n');
+
+      const notificationTitle = currentUser?.id === 'u1'
+        ? '🍳 新的点菜通知' 
+        : '✅ 订单已提交';
+
+      const notificationContent = `
 **${currentUser?.name || '用户'}** 提交了新的点菜订单
 
 **点菜日期：** ${date}
@@ -222,195 +521,246 @@ ${orderDetails}
 
 ---
 时间：${new Date().toLocaleString('zh-CN')}
-    `;
+      `;
 
-    const notifyUserId = currentUser?.id === 'u1' ? 'u2' : 'u1';
-    await sendNotification(notifyUserId, notificationTitle, notificationContent);
+      const notifyUserId = currentUser?.id === 'u1' ? 'u2' : 'u1';
+      await sendNotification(notifyUserId, notificationTitle, notificationContent);
 
-    return newOrder;
-  },
+      return newOrder;
+    },
 
-  updateOrderStatus: (orderId, status) =>
-    set((state) => ({
-      orders: state.orders.map((order) =>
-        order.id === orderId ? { ...order, status, updatedAt: new Date().toISOString() } : order
-      ),
-    })),
-
-  updateIngredientStock: (ingredientId, quantity) =>
-    set((state) => ({
-      ingredients: state.ingredients.map((ing) =>
-        ing.id === ingredientId ? { ...ing, inStock: quantity } : ing
-      ),
-    })),
-
-  getFilteredDishes: () => {
-    const { dishes, searchQuery, selectedCategory } = get();
-    return dishes.filter((dish) => {
-      const matchesSearch =
-        !searchQuery || dish.name.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesCategory = selectedCategory === '全部' || dish.category === selectedCategory;
-      return matchesSearch && matchesCategory;
-    });
-  },
-
-  getShoppingList: (dishes) => {
-    const { ingredients } = get();
-    const ingredientMap = new Map<string, number>();
-
-    dishes.forEach((dish) => {
-      dish.ingredients.forEach((ing) => {
-        const current = ingredientMap.get(ing.ingredientId) || 0;
-        ingredientMap.set(ing.ingredientId, current + ing.amount);
-      });
-    });
-
-    return Array.from(ingredientMap.entries()).map(([id, needed]) => {
-      const ing = ingredients.find((i) => i.id === id);
-      if (!ing) return null;
-      const toBuy = Math.max(0, needed - ing.inStock);
-      return {
-        name: ing.name,
-        unit: ing.unit,
-        needed,
-        inStock: ing.inStock,
-        toBuy,
-      };
-    }).filter(Boolean) as { name: string; unit: string; needed: number; inStock: number; toBuy: number }[];
-  },
-
-  getPendingOrders: () => {
-    return get().orders.filter((order) => order.status === 'pending');
-  },
-
-  addFridgeItem: (item) => {
-    const newItem: FridgeItem = {
-      ...item,
-      id: `f${Date.now()}`,
-      addedDate: new Date().toISOString().split('T')[0],
-    };
-
-    set((state) => ({
-      fridgeItems: [...state.fridgeItems, newItem],
-    }));
-
-    if (newItem.ingredientId) {
-      const ingredient = get().ingredients.find((i) => i.id === newItem.ingredientId);
-      if (ingredient) {
-        get().updateIngredientStock(newItem.ingredientId, ingredient.inStock + newItem.quantity);
-      }
-    }
-  },
-
-  updateFridgeItem: (id, updates) => {
-    const oldItem = get().fridgeItems.find((item) => item.id === id);
-    
-    set((state) => ({
-      fridgeItems: state.fridgeItems.map((item) =>
-        item.id === id ? { ...item, ...updates } : item
-      ),
-    }));
-
-    if (oldItem?.ingredientId && updates.quantity !== undefined) {
-      const ingredient = get().ingredients.find((i) => i.id === oldItem.ingredientId);
-      if (ingredient) {
-        const diff = updates.quantity - oldItem.quantity;
-        get().updateIngredientStock(oldItem.ingredientId, Math.max(0, ingredient.inStock + diff));
-      }
-    }
-  },
-
-  removeFridgeItem: (id) => {
-    const item = get().fridgeItems.find((item) => item.id === id);
-    
-    set((state) => ({
-      fridgeItems: state.fridgeItems.filter((item) => item.id !== id),
-    }));
-
-    if (item?.ingredientId) {
-      const ingredient = get().ingredients.find((i) => i.id === item.ingredientId);
-      if (ingredient) {
-        get().updateIngredientStock(item.ingredientId, Math.max(0, ingredient.inStock - item.quantity));
-      }
-    }
-  },
-
-  syncFridgeToInventory: () => {
-    const { fridgeItems, ingredients } = get();
-    
-    const ingredientStockMap = new Map<string, number>();
-    ingredients.forEach((ing) => {
-      ingredientStockMap.set(ing.id, 0);
-    });
-
-    fridgeItems.forEach((item) => {
-      if (item.ingredientId) {
-        const current = ingredientStockMap.get(item.ingredientId) || 0;
-        ingredientStockMap.set(item.ingredientId, current + item.quantity);
-      }
-    });
-
-    set((state) => ({
-      ingredients: state.ingredients.map((ing) => ({
-        ...ing,
-        inStock: ingredientStockMap.get(ing.id) || ing.inStock,
-      })),
-    }));
-  },
-
-  sendNotification: async (userId: string, title: string, content: string) => {
-    const configData = localStorage.getItem(`notification_config_${userId}`);
-    if (!configData) return false;
-    
-    const config = JSON.parse(configData);
-    
-    try {
-      if (config.service === 'pushplus' && config.token) {
-        await fetch('https://www.pushplus.plus/send', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            token: config.token,
-            title,
-            content,
-            template: 'html'
-          })
-        });
-        return true;
-      }
-
-      if (config.service === 'serverchan' && config.token) {
-        await fetch(`https://sctapi.ftqq.com/${config.token}.send`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: `title=${encodeURIComponent(title)}&desp=${encodeURIComponent(content)}`
-        });
-        return true;
-      }
-
-      if (config.service === 'wework' && config.webhookUrl) {
-        await fetch(config.webhookUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            msgtype: 'markdown',
-            markdown: {
-              content: `**${title}**\n\n${content}`
+    updateOrderStatus: (orderId, status) =>
+      set((state) => {
+        const order = state.orders.find((o) => o.id === orderId);
+        
+        // 如果订单状态从pending变为completed，需要减少库存
+        if (order && order.status === 'pending' && status === 'completed') {
+          // 计算所有菜品需要的食材
+          const ingredientUsage = new Map<string, number>();
+          
+          order.items.forEach((item) => {
+            const dish = state.dishes.find((d) => d.id === item.dishId);
+            if (dish) {
+              dish.ingredients.forEach((ing) => {
+                const current = ingredientUsage.get(ing.ingredientId) || 0;
+                ingredientUsage.set(ing.ingredientId, current + ing.amount * item.quantity);
+              });
             }
-          })
+          });
+
+          // 更新食材库存
+          const newIngredients = state.ingredients.map((ing) => {
+            const usage = ingredientUsage.get(ing.id) || 0;
+            return {
+              ...ing,
+              inStock: Math.max(0, ing.inStock - usage)
+            };
+          });
+
+          // 更新冰箱物品
+          const newFridgeItems = state.fridgeItems.map((fridgeItem) => {
+            if (!fridgeItem.ingredientId) return fridgeItem;
+            const usage = ingredientUsage.get(fridgeItem.ingredientId) || 0;
+            if (usage <= 0) return fridgeItem;
+            
+            const newQuantity = Math.max(0, fridgeItem.quantity - usage);
+            return {
+              ...fridgeItem,
+              quantity: newQuantity
+            };
+          });
+
+          return {
+            orders: state.orders.map((o) =>
+              o.id === orderId ? { ...o, status, updatedAt: new Date().toISOString() } : o
+            ),
+            ingredients: newIngredients,
+            fridgeItems: newFridgeItems
+          };
+        }
+
+        return {
+          orders: state.orders.map((o) =>
+            o.id === orderId ? { ...o, status, updatedAt: new Date().toISOString() } : o
+          ),
+        };
+      }),
+
+    updateIngredientStock: (ingredientId, quantity) =>
+      set((state) => ({
+        ingredients: state.ingredients.map((ing) =>
+          ing.id === ingredientId ? { ...ing, inStock: quantity } : ing
+        ),
+      })),
+
+    getFilteredDishes: () => {
+      const { dishes, searchQuery, selectedCategory } = get();
+      return dishes.filter((dish) => {
+        const matchesSearch =
+          !searchQuery || dish.name.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesCategory = selectedCategory === '全部' || dish.category === selectedCategory;
+        return matchesSearch && matchesCategory;
+      });
+    },
+
+    getShoppingList: (dishes) => {
+      const { ingredients } = get();
+      const ingredientMap = new Map<string, number>();
+
+      dishes.forEach((dish) => {
+        dish.ingredients.forEach((ing) => {
+          const current = ingredientMap.get(ing.ingredientId) || 0;
+          ingredientMap.set(ing.ingredientId, current + ing.amount);
         });
-        return true;
-      }
+      });
 
-      if (config.service === 'email') {
-        console.log('邮件通知:', title, content);
-        return true;
-      }
+      return Array.from(ingredientMap.entries()).map(([id, needed]) => {
+        const ing = ingredients.find((i) => i.id === id);
+        if (!ing) return null;
+        const toBuy = Math.max(0, needed - ing.inStock);
+        return {
+          name: ing.name,
+          unit: ing.unit,
+          needed,
+          inStock: ing.inStock,
+          toBuy,
+        };
+      }).filter(Boolean) as { name: string; unit: string; needed: number; inStock: number; toBuy: number }[];
+    },
 
-      return false;
-    } catch (error) {
-      console.error('发送通知失败:', error);
-      return false;
+    getPendingOrders: () => {
+      return get().orders.filter((order) => order.status === 'pending');
+    },
+
+    addFridgeItem: (item) => {
+      const newItem: FridgeItem = {
+        ...item,
+        id: `f${Date.now()}`,
+        addedDate: new Date().toISOString().split('T')[0],
+      };
+
+      set((state) => ({
+        fridgeItems: [...state.fridgeItems, newItem],
+      }));
+
+      if (newItem.ingredientId) {
+        const ingredient = get().ingredients.find((i) => i.id === newItem.ingredientId);
+        if (ingredient) {
+          get().updateIngredientStock(newItem.ingredientId, ingredient.inStock + newItem.quantity);
+        }
+      }
+    },
+
+    updateFridgeItem: (id, updates) => {
+      const oldItem = get().fridgeItems.find((item) => item.id === id);
+      
+      set((state) => ({
+        fridgeItems: state.fridgeItems.map((item) =>
+          item.id === id ? { ...item, ...updates } : item
+        ),
+      }));
+
+      if (oldItem?.ingredientId && updates.quantity !== undefined) {
+        const ingredient = get().ingredients.find((i) => i.id === oldItem.ingredientId);
+        if (ingredient) {
+          const diff = updates.quantity - oldItem.quantity;
+          get().updateIngredientStock(oldItem.ingredientId, Math.max(0, ingredient.inStock + diff));
+        }
+      }
+    },
+
+    removeFridgeItem: (id) => {
+      const item = get().fridgeItems.find((item) => item.id === id);
+      
+      set((state) => ({
+        fridgeItems: state.fridgeItems.filter((item) => item.id !== id),
+      }));
+
+      if (item?.ingredientId) {
+        const ingredient = get().ingredients.find((i) => i.id === item.ingredientId);
+        if (ingredient) {
+          get().updateIngredientStock(item.ingredientId, Math.max(0, ingredient.inStock - item.quantity));
+        }
+      }
+    },
+
+    syncFridgeToInventory: () => {
+      const { fridgeItems, ingredients } = get();
+      
+      const ingredientStockMap = new Map<string, number>();
+      ingredients.forEach((ing) => {
+        ingredientStockMap.set(ing.id, 0);
+      });
+
+      fridgeItems.forEach((item) => {
+        if (item.ingredientId) {
+          const current = ingredientStockMap.get(item.ingredientId) || 0;
+          ingredientStockMap.set(item.ingredientId, current + item.quantity);
+        }
+      });
+
+      set((state) => ({
+        ingredients: state.ingredients.map((ing) => ({
+          ...ing,
+          inStock: ingredientStockMap.get(ing.id) || ing.inStock,
+        })),
+      }));
+    },
+
+    sendNotification: async (userId: string, title: string, content: string) => {
+      const configData = localStorage.getItem(`notification_config_${userId}`);
+      if (!configData) return false;
+      
+      const config = JSON.parse(configData);
+      
+      try {
+        if (config.service === 'pushplus' && config.token) {
+          await fetch('https://www.pushplus.plus/send', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              token: config.token,
+              title,
+              content,
+              template: 'html'
+            })
+          });
+          return true;
+        }
+
+        if (config.service === 'serverchan' && config.token) {
+          await fetch(`https://sctapi.ftqq.com/${config.token}.send`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `title=${encodeURIComponent(title)}&desp=${encodeURIComponent(content)}`
+          });
+          return true;
+        }
+
+        if (config.service === 'wework' && config.webhookUrl) {
+          await fetch(config.webhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              msgtype: 'markdown',
+              markdown: {
+                content: `**${title}**\n\n${content}`
+              }
+            })
+          });
+          return true;
+        }
+
+        if (config.service === 'email') {
+          console.log('邮件通知:', title, content);
+          return true;
+        }
+
+        return false;
+      } catch (error) {
+        console.error('发送通知失败:', error);
+        return false;
+      }
     }
-  },
-}));
+  };
+});
