@@ -101,7 +101,7 @@ export function FridgePage() {
         if (!a.expiryDate && !b.expiryDate) return 0;
         if (!a.expiryDate) return 1;
         if (!b.expiryDate) return -1;
-        return new Date(a.expiryDate).getTime() - new Date(a.expiryDate).getTime();
+        return new Date(a.expiryDate).getTime() - new Date(b.expiryDate).getTime();
       case 'added':
         return new Date(b.addedDate).getTime() - new Date(a.addedDate).getTime();
       default:
@@ -117,20 +117,24 @@ export function FridgePage() {
     return acc;
   }, {} as Record<string, FridgeItem[]>);
 
+  const expiredItems = fridgeItems.filter(isExpired);
+  const expiringItems = fridgeItems.filter(isExpiringSoon).filter(item => !isExpired(item));
+
   return (
-    <div className="min-h-screen bg-pattern pt-24 pb-20">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 animate-fade-up">
+    <div className="min-h-screen bg-pattern pt-20 pb-24">
+      <div className="max-w-7xl mx-auto px-3 md:px-4">
+        {/* 顶部标题和操作按钮 */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <div>
-            <h1 className="text-4xl font-bold text-white mb-2">冰箱储备</h1>
-            <p className="text-gray-400 text-lg">管理您的冰箱食材，关联库存清单</p>
+            <h1 className="text-xl md:text-3xl font-bold text-white mb-1">冰箱储备</h1>
+            <p className="text-gray-400 text-sm md:text-base">管理您的冰箱食材，关联库存清单</p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-2">
             <button
               onClick={handleSyncToInventory}
-              className="flex items-center gap-2 px-4 py-3 bg-dark-700 border border-dark-600 text-white rounded-xl font-medium hover:bg-dark-600 transition-all"
+              className="flex items-center gap-2 px-3 py-2 md:px-4 md:py-3 bg-dark-700 border border-dark-600 text-white rounded-lg md:rounded-xl font-medium hover:bg-dark-600 transition-all text-sm"
             >
-              <RefreshCw className="w-5 h-5" />
+              <RefreshCw className="w-4 h-4 md:w-5 md:h-5" />
               同步库存
             </button>
             <button
@@ -138,24 +142,26 @@ export function FridgePage() {
                 setEditingItem(null);
                 setShowAddModal(true);
               }}
-              className="flex items-center gap-2 px-6 py-3 gradient-bg text-white rounded-xl font-bold shadow-xl shadow-primary-500/30 hover:shadow-primary-500/50 hover:scale-[1.02] transition-all"
+              className="flex items-center gap-2 px-4 py-2 md:px-6 md:py-3 gradient-bg text-white rounded-lg md:rounded-xl font-bold shadow-lg shadow-primary-500/30 hover:shadow-primary-500/50 hover:scale-[1.02] transition-all text-sm"
             >
-              <Plus className="w-5 h-5" />
+              <Plus className="w-4 h-4 md:w-5 md:h-5" />
               添加食材
             </button>
           </div>
         </div>
 
+        {/* 同步成功提示 */}
         {showSyncSuccess && (
-          <div className="mb-6 p-4 bg-secondary-500/20 border border-secondary-500/30 rounded-xl text-secondary-400 text-center animate-fade-up">
-            <CheckCircle className="w-5 h-5 inline-block mr-2" />
+          <div className="mb-4 p-3 md:p-4 bg-secondary-500/20 border border-secondary-500/30 rounded-lg md:rounded-xl text-secondary-400 text-center animate-fade-up">
+            <CheckCircle className="w-4 h-4 md:w-5 md:h-5 inline-block mr-2" />
             已将 {syncCount} 种关联食材同步到库存！
           </div>
         )}
 
+        {/* 食材关联说明 */}
         {(fridgeItems.filter(item => item.ingredientId).length > 0) && (
-          <div className="mb-6 p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl text-blue-400 text-sm flex items-start gap-2">
-            <Info className="w-5 h-5 flex-shrink-0 mt-0.5" />
+          <div className="mb-4 p-3 md:p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg md:rounded-xl text-blue-400 text-sm flex items-start gap-2">
+            <Info className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0 mt-0.5" />
             <div>
               <p className="font-semibold mb-1">食材关联说明</p>
               <p>您有 {fridgeItems.filter(item => item.ingredientId).length} 种食材已关联到库存系统。关联后，冰箱中的食材数量会自动同步到食材库存中。</p>
@@ -163,39 +169,40 @@ export function FridgePage() {
           </div>
         )}
 
-        {(isExpiringSoon.length > 0 || isExpired.length > 0) && fridgeItems.some(isExpiringSoon) && (
-          <div className="space-y-4 mb-8 animate-fade-up">
-            {fridgeItems.filter(isExpired).length > 0 && (
-              <div className="glass-card rounded-2xl p-6 border border-red-500/30 bg-red-500/10">
-                <div className="flex items-center gap-3 mb-4">
-                  <XCircle className="w-7 h-7 text-red-400" />
-                  <h2 className="text-xl font-bold text-red-400">已过期食材 ({fridgeItems.filter(isExpired).length})</h2>
+        {/* 过期提醒 */}
+        {(expiredItems.length > 0 || expiringItems.length > 0) && (
+          <div className="space-y-3 mb-6">
+            {expiredItems.length > 0 && (
+              <div className="glass-card rounded-lg md:rounded-xl p-3 md:p-4 border border-red-500/30 bg-red-500/10">
+                <div className="flex items-center gap-2 mb-3">
+                  <XCircle className="w-5 h-5 md:w-7 md:h-7 text-red-400" />
+                  <h2 className="text-base md:text-xl font-bold text-red-400">已过期食材 ({expiredItems.length})</h2>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {fridgeItems.filter(isExpired).map((item) => (
+                  {expiredItems.map((item) => (
                     <span
                       key={item.id}
-                      className="px-4 py-2 bg-red-500/20 border border-red-500/30 rounded-full text-red-300 text-sm font-medium"
+                      className="px-3 py-1 md:px-4 md:py-2 bg-red-500/20 border border-red-500/30 rounded-full text-red-300 text-xs md:text-sm font-medium"
                     >
-                      {item.name} - {new Date(item.expiryDate!).toLocaleDateString()}
+                      {item.name}
                     </span>
                   ))}
                 </div>
               </div>
             )}
-            {fridgeItems.filter(isExpiringSoon).filter(item => !isExpired(item)).length > 0 && (
-              <div className="glass-card rounded-2xl p-6 border border-yellow-500/30 bg-yellow-500/10 animate-fade-up">
-                <div className="flex items-center gap-3 mb-4">
-                  <AlertTriangle className="w-7 h-7 text-yellow-400" />
-                  <h2 className="text-xl font-bold text-yellow-400">即将过期 ({fridgeItems.filter(isExpiringSoon).filter(item => !isExpired(item)).length})</h2>
+            {expiringItems.length > 0 && (
+              <div className="glass-card rounded-lg md:rounded-xl p-3 md:p-4 border border-yellow-500/30 bg-yellow-500/10">
+                <div className="flex items-center gap-2 mb-3">
+                  <AlertTriangle className="w-5 h-5 md:w-7 md:h-7 text-yellow-400" />
+                  <h2 className="text-base md:text-xl font-bold text-yellow-400">即将过期 ({expiringItems.length})</h2>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {fridgeItems.filter(isExpiringSoon).filter(item => !isExpired(item)).map((item) => (
+                  {expiringItems.map((item) => (
                     <span
                       key={item.id}
-                      className="px-4 py-2 bg-yellow-500/20 border border-yellow-500/30 rounded-full text-yellow-300 text-sm font-medium"
+                      className="px-3 py-1 md:px-4 md:py-2 bg-yellow-500/20 border border-yellow-500/30 rounded-full text-yellow-300 text-xs md:text-sm font-medium"
                     >
-                      {item.name} - {new Date(item.expiryDate!).toLocaleDateString()}
+                      {item.name}
                     </span>
                   ))}
                 </div>
@@ -204,31 +211,31 @@ export function FridgePage() {
           </div>
         )}
 
-        <div className="glass-card rounded-2xl p-6 mb-8 border border-dark-600/30 animate-fade-up animate-delay-100">
-          <div className="flex flex-col md:flex-row gap-4">
+        {/* 搜索和筛选 */}
+        <div className="glass-card rounded-lg md:rounded-xl p-3 md:p-4 mb-4 border border-dark-600/30">
+          <div className="flex flex-col md:flex-row gap-3">
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 md:w-5 md:h-5 text-gray-400" />
                 <input
                   type="text"
                   placeholder="搜索食材..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 bg-dark-700 border border-dark-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-all"
+                  className="w-full pl-10 pr-4 py-2 md:py-3 bg-dark-700 border border-dark-600 rounded-lg md:rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-all text-sm"
                 />
               </div>
             </div>
-            <div className="flex gap-3">
+            <div className="flex gap-2">
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value as any)}
-                className="px-4 py-3 bg-dark-700 border border-dark-600 rounded-xl text-white focus:outline-none focus:border-primary-500 transition-all"
+                className="px-3 py-2 md:px-4 md:py-3 bg-dark-700 border border-dark-600 rounded-lg md:rounded-xl text-white focus:outline-none focus:border-primary-500 transition-all text-sm"
               >
                 <option value="全部">全部分类</option>
                 <option value="冷藏">冷藏</option>
                 <option value="冷冻">冷冻</option>
                 <option value="常温">常温</option>
-                <option value="其他">其他</option>
                 <option value="卤味">卤味</option>
                 <option value="海鲜">海鲜</option>
                 <option value="水果">水果</option>
@@ -237,32 +244,33 @@ export function FridgePage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
-                className="px-4 py-3 bg-dark-700 border border-dark-600 rounded-xl text-white focus:outline-none focus:border-primary-500 transition-all"
+                className="px-3 py-2 md:px-4 md:py-3 bg-dark-700 border border-dark-600 rounded-lg md:rounded-xl text-white focus:outline-none focus:border-primary-500 transition-all text-sm"
               >
-                <option value="added">按添加时间</option>
-                <option value="name">按名称</option>
-                <option value="expiry">按过期时间</option>
+                <option value="added">添加时间</option>
+                <option value="name">名称</option>
+                <option value="expiry">保质期</option>
               </select>
             </div>
           </div>
         </div>
 
-        <div className="space-y-8">
+        {/* 食材列表 */}
+        <div className="space-y-4">
           {Object.entries(groupedItems).map(([category, items], index) => {
             const Icon = categoryIcons[category as keyof typeof categoryIcons];
             const colorClass = categoryColors[category as keyof typeof categoryColors];
             
             return (
-              <div key={category} className="animate-fade-up" style={{ animationDelay: `${index * 100}ms` }}>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${colorClass}`}>
-                    <Icon className="w-5 h-5" />
+              <div key={category} className="animate-fade-up" style={{ animationDelay: `${index * 50}ms` }}>
+                <div className="flex items-center gap-2 mb-3">
+                  <div className={`w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl flex items-center justify-center ${colorClass}`}>
+                    <Icon className="w-4 h-4 md:w-5 md:h-5" />
                   </div>
-                  <h2 className="text-2xl font-bold text-white">{category}</h2>
-                  <span className="text-gray-400 text-lg">({items.length})</span>
+                  <h2 className="text-lg md:text-2xl font-bold text-white">{category}</h2>
+                  <span className="text-gray-400 text-sm md:text-lg">({items.length})</span>
                 </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                   {items.map((item, itemIndex) => {
                     const isExpiring = isExpiringSoon(item);
                     const isExpiredItem = isExpired(item);
@@ -275,54 +283,54 @@ export function FridgePage() {
                     return (
                       <div
                         key={item.id}
-                        className={`glass-card rounded-2xl p-5 border ${borderClass} hover:border-primary-500/50 transition-all animate-fade-up group`}
-                        style={{ animationDelay: `${itemIndex * 50}ms` }}
+                        className={`glass-card rounded-lg md:rounded-xl p-3 md:p-4 border ${borderClass} hover:border-primary-500/50 transition-all animate-fade-up`}
+                        style={{ animationDelay: `${itemIndex * 30}ms` }}
                       >
-                        <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-start justify-between mb-2">
                           <div className="flex-1">
-                            <h3 className="font-bold text-white text-lg mb-1">{item.name}</h3>
-                            <div className="flex items-center gap-2 mb-3">
-                              <div className="flex items-center gap-2 bg-dark-700 rounded-xl p-1">
+                            <h3 className="font-bold text-white text-sm md:text-lg mb-1">{item.name}</h3>
+                            <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-1 bg-dark-700 rounded-lg p-1">
                                 <button
                                   onClick={() => handleQuantityChange(item, item.quantity - 1)}
-                                  className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-dark-600 transition-all"
+                                  className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center rounded-md hover:bg-dark-600 transition-all"
                                 >
-                                  <MinusCircle className="w-5 h-5 text-gray-400 hover:text-white" />
+                                  <MinusCircle className="w-4 h-4 text-gray-400 hover:text-white" />
                                 </button>
-                                <span className="text-primary-400 font-bold text-xl w-12 text-center">{item.quantity}</span>
+                                <span className="text-primary-400 font-bold text-sm md:text-xl w-8 md:w-10 text-center">{item.quantity}</span>
                                 <button
                                   onClick={() => handleQuantityChange(item, item.quantity + 1)}
-                                  className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-dark-600 transition-all"
+                                  className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center rounded-md hover:bg-dark-600 transition-all"
                                 >
-                                  <PlusCircle className="w-5 h-5 text-gray-400 hover:text-white" />
+                                  <PlusCircle className="w-4 h-4 text-gray-400 hover:text-white" />
                                 </button>
                               </div>
-                              <span className="text-gray-400">{item.unit}</span>
+                              <span className="text-gray-400 text-xs md:text-sm">{item.unit}</span>
                             </div>
                           </div>
-                          <div className="flex gap-2">
+                          <div className="flex gap-1">
                             <button
                               onClick={() => {
                                 setEditingItem(item);
                                 setShowAddModal(true);
                               }}
-                              className="w-9 h-9 rounded-xl bg-dark-600 hover:bg-dark-500 flex items-center justify-center transition-all"
+                              className="w-7 h-7 md:w-9 md:h-9 rounded-lg bg-dark-600 hover:bg-dark-500 flex items-center justify-center transition-all"
                             >
-                              <Edit className="w-4 h-4 text-gray-300" />
+                              <Edit className="w-3 h-3 md:w-4 md:h-4 text-gray-300" />
                             </button>
                             <button
                               onClick={() => removeFridgeItem(item.id)}
-                              className="w-9 h-9 rounded-xl bg-red-500/20 hover:bg-red-500/30 flex items-center justify-center transition-all"
+                              className="w-7 h-7 md:w-9 md:h-9 rounded-lg bg-red-500/20 hover:bg-red-500/30 flex items-center justify-center transition-all"
                             >
-                              <Trash2 className="w-4 h-4 text-red-400" />
+                              <Trash2 className="w-3 h-3 md:w-4 md:h-4 text-red-400" />
                             </button>
                           </div>
                         </div>
 
-                        <div className="space-y-2">
+                        <div className="space-y-1">
                           {item.expiryDate && (
-                            <div className="flex items-center gap-2 text-sm">
-                              <Calendar className="w-4 h-4 text-gray-400" />
+                            <div className="flex items-center gap-2 text-xs md:text-sm">
+                              <Calendar className="w-3 h-3 md:w-4 md:h-4 text-gray-400" />
                               <span className="text-gray-400">保质期：</span>
                               <span className={`font-medium ${isExpiredItem ? 'text-red-400' : isExpiring ? 'text-yellow-400' : 'text-gray-300'}`}>
                                 {new Date(item.expiryDate).toLocaleDateString()}
@@ -331,14 +339,14 @@ export function FridgePage() {
                           )}
                           
                           {linkedIngredient && (
-                            <div className="flex items-center gap-2 text-sm">
-                              <CheckCircle className="w-4 h-4 text-secondary-400" />
-                              <span className="text-secondary-300">已关联食材库存：{linkedIngredient.name}</span>
+                            <div className="flex items-center gap-2 text-xs md:text-sm">
+                              <CheckCircle className="w-3 h-3 md:w-4 md:h-4 text-secondary-400" />
+                              <span className="text-secondary-300">已关联：{linkedIngredient.name}</span>
                             </div>
                           )}
                           
                           {item.notes && (
-                            <p className="text-gray-400 text-sm mt-2 pt-2 border-t border-dark-600/30">
+                            <p className="text-gray-400 text-xs md:text-sm mt-2 pt-2 border-t border-dark-600/30">
                               {item.notes}
                             </p>
                           )}
@@ -352,18 +360,18 @@ export function FridgePage() {
           })}
 
           {filteredItems.length === 0 && (
-            <div className="text-center py-16 glass-card rounded-2xl border border-dark-600/30 animate-fade-up">
-              <Package className="w-16 h-16 text-gray-500 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-white mb-2">冰箱里还没有食材</h3>
-              <p className="text-gray-400 mb-6">点击"添加食材"开始管理您的冰箱储备</p>
+            <div className="text-center py-12 glass-card rounded-lg md:rounded-xl border border-dark-600/30">
+              <Package className="w-12 h-12 md:w-16 md:h-16 text-gray-500 mx-auto mb-3" />
+              <h3 className="text-lg md:text-xl font-bold text-white mb-2">冰箱里还没有食材</h3>
+              <p className="text-gray-400 text-sm mb-4">点击"添加食材"开始管理您的冰箱储备</p>
               <button
                 onClick={() => {
                   setEditingItem(null);
                   setShowAddModal(true);
                 }}
-                className="inline-flex items-center gap-2 px-6 py-3 gradient-bg text-white rounded-xl font-bold shadow-xl shadow-primary-500/30 hover:shadow-primary-500/50 hover:scale-[1.02] transition-all"
+                className="inline-flex items-center gap-2 px-4 py-2 md:px-6 md:py-3 gradient-bg text-white rounded-lg md:rounded-xl font-bold shadow-lg shadow-primary-500/30 hover:shadow-primary-500/50 hover:scale-[1.02] transition-all text-sm"
               >
-                <Plus className="w-5 h-5" />
+                <Plus className="w-4 h-4 md:w-5 md:h-5" />
                 添加第一个食材
               </button>
             </div>
@@ -371,6 +379,7 @@ export function FridgePage() {
         </div>
       </div>
 
+      {/* 添加/编辑弹窗 */}
       {showAddModal && (
         <FridgeItemModal
           item={editingItem}
@@ -428,19 +437,19 @@ function FridgeItemModal({
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="glass-card rounded-3xl p-8 w-full max-w-lg border border-dark-600/30 animate-bounce-in">
-        <h2 className="text-2xl font-bold text-white mb-6">
+      <div className="glass-card rounded-xl md:rounded-2xl p-6 md:p-8 w-full max-w-md border border-dark-600/30 animate-bounce-in">
+        <h2 className="text-xl md:text-2xl font-bold text-white mb-4 md:mb-6">
           {item ? '编辑食材' : '添加食材'}
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">食材名称</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-all"
+              className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-all"
               placeholder="请输入食材名称"
               required
             />
@@ -451,23 +460,26 @@ function FridgeItemModal({
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value as any)}
-              className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-xl text-white focus:outline-none focus:border-primary-500 transition-all"
+              className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white focus:outline-none focus:border-primary-500 transition-all"
             >
               <option value="冷藏">冷藏</option>
               <option value="冷冻">冷冻</option>
               <option value="常温">常温</option>
-              <option value="其他">其他</option>
+              <option value="卤味">卤味</option>
+              <option value="海鲜">海鲜</option>
+              <option value="水果">水果</option>
+              <option value="酒水">酒水</option>
             </select>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">数量</label>
               <input
                 type="number"
                 value={quantity}
                 onChange={(e) => setQuantity(Math.max(0, Number(e.target.value)))}
-                className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-all"
+                className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-all"
                 min="0"
                 required
               />
@@ -478,7 +490,7 @@ function FridgeItemModal({
                 type="text"
                 value={unit}
                 onChange={(e) => setUnit(e.target.value)}
-                className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-all"
+                className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-all"
                 placeholder="个、克、包等"
                 required
               />
@@ -491,7 +503,7 @@ function FridgeItemModal({
               type="date"
               value={expiryDate}
               onChange={(e) => setExpiryDate(e.target.value)}
-              className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-all"
+              className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-all"
             />
           </div>
 
@@ -500,7 +512,7 @@ function FridgeItemModal({
             <select
               value={ingredientId}
               onChange={(e) => setIngredientId(e.target.value)}
-              className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-xl text-white focus:outline-none focus:border-primary-500 transition-all"
+              className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white focus:outline-none focus:border-primary-500 transition-all"
             >
               <option value="">不关联</option>
               {ingredients.map((ing) => (
@@ -517,8 +529,8 @@ function FridgeItemModal({
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-all resize-none"
-              rows={3}
+              className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-all resize-none"
+              rows={2}
               placeholder="添加备注..."
             />
           </div>
@@ -527,15 +539,15 @@ function FridgeItemModal({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 py-3 bg-dark-600 text-gray-300 rounded-xl font-semibold hover:bg-dark-500 transition-all"
+              className="flex-1 py-3 bg-dark-600 text-gray-300 rounded-lg font-semibold hover:bg-dark-500 transition-all"
             >
               取消
             </button>
             <button
               type="submit"
-              className="flex-1 py-3 gradient-bg text-white rounded-xl font-bold shadow-xl shadow-primary-500/30 hover:shadow-primary-500/50 transition-all flex items-center justify-center gap-2"
+              className="flex-1 py-3 gradient-bg text-white rounded-lg font-bold shadow-lg shadow-primary-500/30 hover:shadow-primary-500/50 transition-all flex items-center justify-center gap-2"
             >
-              <Save className="w-5 h-5" />
+              <Save className="w-4 h-4" />
               {item ? '保存修改' : '添加'}
             </button>
           </div>

@@ -1,40 +1,7 @@
 import { create } from 'zustand';
 import { CartItem, Dish, Ingredient, Order, User, FridgeItem } from '@/types';
-import { mockDishes, mockIngredients, mockOrders, mockUsers } from '@/data/mockData';
-
-interface MenuStore {
-  dishes: Dish[];
-  ingredients: Ingredient[];
-  orders: Order[];
-  users: User[];
-  currentUser: User | null;
-  cart: CartItem[];
-  selectedDate: string;
-  searchQuery: string;
-  selectedCategory: string;
-  fridgeItems: FridgeItem[];
-
-  setCurrentUser: (user: User) => void;
-  addToCart: (dish: Dish) => void;
-  removeFromCart: (dishId: string) => void;
-  updateCartQuantity: (dishId: string, quantity: number) => void;
-  clearCart: () => void;
-  setSelectedDate: (date: string) => void;
-  setSearchQuery: (query: string) => void;
-  setSelectedCategory: (category: string) => void;
-  createOrder: (items: CartItem[], date: string) => Promise<Order | null>;
-  updateOrderStatus: (orderId: string, status: Order['status']) => void;
-  updateIngredientStock: (ingredientId: string, quantity: number) => void;
-  getFilteredDishes: () => Dish[];
-  getShoppingList: (dishes: Dish[]) => { name: string; unit: string; needed: number; inStock: number; toBuy: number }[];
-  getPendingOrders: () => Order[];
-  
-  addFridgeItem: (item: Omit<FridgeItem, 'id' | 'addedDate'>) => void;
-  updateFridgeItem: (id: string, item: Partial<FridgeItem>) => void;
-  removeFridgeItem: (id: string) => void;
-  syncFridgeToInventory: () => void;
-  sendNotification: (userId: string, title: string, content: string) => Promise<boolean>;
-}
+import { mockDishes, mockIngredients, mockOrders } from '@/data/mockData';
+import { firebaseService } from '@/firebase/firebaseService';
 
 // 初始化默认冰箱食材
 const defaultFridgeItems: FridgeItem[] = [
@@ -52,7 +19,7 @@ const defaultFridgeItems: FridgeItem[] = [
     name: '西红柿',
     category: '冷藏',
     unit: '个',
-    quantity: 8,
+    quantity: 7,
     addedDate: new Date().toISOString().split('T')[0],
     ingredientId: 'i5'
   },
@@ -61,7 +28,7 @@ const defaultFridgeItems: FridgeItem[] = [
     name: '黄瓜',
     category: '冷藏',
     unit: '根',
-    quantity: 5,
+    quantity: 3,
     addedDate: new Date().toISOString().split('T')[0],
     ingredientId: 'i7'
   },
@@ -70,7 +37,7 @@ const defaultFridgeItems: FridgeItem[] = [
     name: '猪肉',
     category: '冷冻',
     unit: '克',
-    quantity: 500,
+    quantity: 200,
     addedDate: new Date().toISOString().split('T')[0],
     ingredientId: 'i11'
   },
@@ -79,7 +46,7 @@ const defaultFridgeItems: FridgeItem[] = [
     name: '西兰花',
     category: '冷藏',
     unit: '颗',
-    quantity: 3,
+    quantity: 2,
     addedDate: new Date().toISOString().split('T')[0],
     ingredientId: 'i2'
   },
@@ -88,7 +55,7 @@ const defaultFridgeItems: FridgeItem[] = [
     name: '葱',
     category: '常温',
     unit: '根',
-    quantity: 8,
+    quantity: 5,
     addedDate: new Date().toISOString().split('T')[0],
     ingredientId: 'i15'
   },
@@ -97,7 +64,7 @@ const defaultFridgeItems: FridgeItem[] = [
     name: '蒜',
     category: '常温',
     unit: '瓣',
-    quantity: 40,
+    quantity: 30,
     addedDate: new Date().toISOString().split('T')[0],
     ingredientId: 'i17'
   },
@@ -106,7 +73,7 @@ const defaultFridgeItems: FridgeItem[] = [
     name: '姜',
     category: '常温',
     unit: '片',
-    quantity: 30,
+    quantity: 15,
     addedDate: new Date().toISOString().split('T')[0],
     ingredientId: 'i16'
   },
@@ -115,7 +82,7 @@ const defaultFridgeItems: FridgeItem[] = [
     name: '生抽',
     category: '常温',
     unit: '毫升',
-    quantity: 400,
+    quantity: 300,
     addedDate: new Date().toISOString().split('T')[0],
     ingredientId: 'i18'
   },
@@ -124,7 +91,7 @@ const defaultFridgeItems: FridgeItem[] = [
     name: '豆腐',
     category: '冷藏',
     unit: '块',
-    quantity: 4,
+    quantity: 3,
     addedDate: new Date().toISOString().split('T')[0],
     ingredientId: 'i9'
   },
@@ -330,8 +297,8 @@ const defaultFridgeItems: FridgeItem[] = [
     id: 'f33',
     name: '三文鱼',
     category: '海鲜',
-    unit: '克',
-    quantity: 300,
+    unit: '片',
+    quantity: 6,
     addedDate: new Date().toISOString().split('T')[0],
     ingredientId: 'i33'
   },
@@ -375,8 +342,8 @@ const defaultFridgeItems: FridgeItem[] = [
     id: 'f38',
     name: '串茄',
     category: '水果',
-    unit: '串',
-    quantity: 5,
+    unit: '盒',
+    quantity: 1,
     addedDate: new Date().toISOString().split('T')[0],
     ingredientId: 'i38'
   },
@@ -400,7 +367,73 @@ const defaultFridgeItems: FridgeItem[] = [
   }
 ];
 
+// 从 localStorage 加载数据
+const loadFromLocalStorage = <T>(key: string, defaultValue: T): T => {
+  try {
+    const saved = localStorage.getItem(key);
+    return saved ? JSON.parse(saved) : defaultValue;
+  } catch {
+    return defaultValue;
+  }
+};
+
+// 保存数据到 localStorage
+const saveToLocalStorage = (key: string, data: any) => {
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch (e) {
+    console.error('Failed to save to localStorage:', e);
+  }
+};
+
+interface MenuStore {
+  dishes: Dish[];
+  ingredients: Ingredient[];
+  orders: Order[];
+  users: User[];
+  currentUser: User | null;
+  cart: CartItem[];
+  selectedDate: string;
+  searchQuery: string;
+  selectedCategory: string;
+  fridgeItems: FridgeItem[];
+
+  setCurrentUser: (user: User) => void;
+  addToCart: (dish: Dish) => void;
+  removeFromCart: (dishId: string) => void;
+  updateCartQuantity: (dishId: string, quantity: number) => void;
+  clearCart: () => void;
+  setSelectedDate: (date: string) => void;
+  setSearchQuery: (query: string) => void;
+  setSelectedCategory: (category: string) => void;
+  createOrder: (items: CartItem[], date: string) => Promise<Order | null>;
+  updateOrderStatus: (orderId: string, status: Order['status']) => void;
+  deleteOrder: (orderId: string) => void;
+  updateIngredientStock: (ingredientId: string, quantity: number) => void;
+  getFilteredDishes: () => Dish[];
+  getShoppingList: (dishes: Dish[]) => { name: string; unit: string; needed: number; inStock: number; toBuy: number }[];
+  getPendingOrders: () => Order[];
+  
+  addFridgeItem: (item: Omit<FridgeItem, 'id' | 'addedDate'>) => void;
+  updateFridgeItem: (id: string, item: Partial<FridgeItem>) => void;
+  removeFridgeItem: (id: string) => void;
+  syncFridgeToInventory: () => void;
+  sendNotification: (userId: string, title: string, content: string) => Promise<boolean>;
+}
+
 export const useMenuStore = create<MenuStore>((set, get) => {
+  // 初始化默认用户
+  const initialUsers: User[] = [
+    { id: 'u1', name: '赵梓涵', role: 'wife', wechatId: 'pushplus_configured' },
+    { id: 'u2', name: '谢一鸣', role: 'husband', wechatId: 'pushplus_configured' },
+  ];
+
+  // 从 localStorage 加载持久化数据
+  const savedIngredients = loadFromLocalStorage('ingredients', mockIngredients);
+  const savedOrders = loadFromLocalStorage('orders', mockOrders);
+  const savedFridgeItems = loadFromLocalStorage('fridgeItems', defaultFridgeItems);
+  const savedCurrentUser = loadFromLocalStorage('currentUser', initialUsers[0]);
+
   // 自动初始化 PushPlus 配置
   const initNotificationConfigs = () => {
     const zihanConfig = {
@@ -424,24 +457,108 @@ export const useMenuStore = create<MenuStore>((set, get) => {
 
   initNotificationConfigs();
 
-  const initialUsers: MenuStore['users'] = [
-    { id: 'u1', name: '赵梓涵', role: 'wife', wechatId: 'pushplus_configured' },
-    { id: 'u2', name: '谢一鸣', role: 'husband', wechatId: 'pushplus_configured' },
-  ];
+  // Firebase 同步函数
+  const syncOrdersToFirebase = async (orders: Order[]) => {
+    try {
+      await firebaseService.saveOrders(orders);
+    } catch (error) {
+      console.warn('Failed to sync orders to Firebase:', error);
+    }
+  };
+
+  const syncIngredientsToFirebase = async (ingredients: Ingredient[]) => {
+    try {
+      await firebaseService.saveIngredients(ingredients);
+    } catch (error) {
+      console.warn('Failed to sync ingredients to Firebase:', error);
+    }
+  };
+
+  const syncFridgeItemsToFirebase = async (fridgeItems: FridgeItem[]) => {
+    try {
+      await firebaseService.saveFridgeItems(fridgeItems);
+    } catch (error) {
+      console.warn('Failed to sync fridge items to Firebase:', error);
+    }
+  };
+
+  // 监听 Firebase 变化
+  const subscribeToFirebaseUpdates = () => {
+    firebaseService.subscribeToOrders((orders) => {
+      set({ orders });
+      saveToLocalStorage('orders', orders);
+    });
+
+    firebaseService.subscribeToIngredients((ingredients) => {
+      set({ ingredients });
+      saveToLocalStorage('ingredients', ingredients);
+    });
+
+    firebaseService.subscribeToFridgeItems((fridgeItems) => {
+      set({ fridgeItems });
+      saveToLocalStorage('fridgeItems', fridgeItems);
+    });
+  };
+
+  // 从 Firebase 初始化数据
+  const initFromFirebase = async () => {
+    try {
+      const [fbOrders, fbIngredients, fbFridgeItems] = await Promise.all([
+        firebaseService.loadOrders(),
+        firebaseService.loadIngredients(),
+        firebaseService.loadFridgeItems(),
+      ]);
+
+      if (fbOrders.length > 0) {
+        set({ orders: fbOrders });
+        saveToLocalStorage('orders', fbOrders);
+      }
+      if (fbIngredients.length > 0) {
+        set({ ingredients: fbIngredients });
+        saveToLocalStorage('ingredients', fbIngredients);
+      }
+      if (fbFridgeItems.length > 0) {
+        set({ fridgeItems: fbFridgeItems });
+        saveToLocalStorage('fridgeItems', fbFridgeItems);
+      }
+
+      // 如果 Firebase 为空，初始化数据
+      if (fbOrders.length === 0) {
+        await firebaseService.saveOrders(savedOrders);
+      }
+      if (fbIngredients.length === 0) {
+        await firebaseService.saveIngredients(savedIngredients);
+      }
+      if (fbFridgeItems.length === 0) {
+        await firebaseService.saveFridgeItems(savedFridgeItems);
+      }
+
+      // 开始监听
+      subscribeToFirebaseUpdates();
+    } catch (error) {
+      console.warn('Failed to initialize from Firebase:', error);
+    }
+  };
+
+  // 延迟初始化 Firebase
+  setTimeout(initFromFirebase, 1000);
 
   return {
     dishes: mockDishes,
-    ingredients: mockIngredients,
-    orders: mockOrders,
+    ingredients: savedIngredients,
+    orders: savedOrders,
     users: initialUsers,
-    currentUser: initialUsers[0],
+    currentUser: savedCurrentUser,
     cart: [],
     selectedDate: new Date().toISOString().split('T')[0],
     searchQuery: '',
     selectedCategory: '全部',
-    fridgeItems: defaultFridgeItems,
+    fridgeItems: savedFridgeItems,
 
-    setCurrentUser: (user) => set({ currentUser: user }),
+    setCurrentUser: (user) => {
+      set({ currentUser: user });
+      saveToLocalStorage('currentUser', user);
+    },
 
     addToCart: (dish) =>
       set((state) => {
@@ -498,7 +615,12 @@ export const useMenuStore = create<MenuStore>((set, get) => {
         updatedAt: new Date().toISOString(),
       };
 
-      set((state) => ({ orders: [newOrder, ...state.orders] }));
+      const updatedOrders = [newOrder, ...get().orders];
+      set({ orders: updatedOrders });
+      saveToLocalStorage('orders', updatedOrders);
+      
+      syncOrdersToFirebase(updatedOrders);
+      
       get().clearCart();
 
       const { currentUser, sendNotification } = get();
@@ -549,7 +671,7 @@ ${orderDetails}
           });
 
           // 更新食材库存
-          const newIngredients = state.ingredients.map((ing) => {
+          const updatedIngredients = state.ingredients.map((ing) => {
             const usage = ingredientUsage.get(ing.id) || 0;
             return {
               ...ing,
@@ -558,7 +680,7 @@ ${orderDetails}
           });
 
           // 更新冰箱物品
-          const newFridgeItems = state.fridgeItems.map((fridgeItem) => {
+          const updatedFridgeItems = state.fridgeItems.map((fridgeItem) => {
             if (!fridgeItem.ingredientId) return fridgeItem;
             const usage = ingredientUsage.get(fridgeItem.ingredientId) || 0;
             if (usage <= 0) return fridgeItem;
@@ -570,28 +692,52 @@ ${orderDetails}
             };
           });
 
+          const updatedOrders = state.orders.map((o) =>
+            o.id === orderId ? { ...o, status, updatedAt: new Date().toISOString() } : o
+          );
+
+          saveToLocalStorage('orders', updatedOrders);
+          saveToLocalStorage('ingredients', updatedIngredients);
+          saveToLocalStorage('fridgeItems', updatedFridgeItems);
+
+          syncOrdersToFirebase(updatedOrders);
+          syncIngredientsToFirebase(updatedIngredients);
+          syncFridgeItemsToFirebase(updatedFridgeItems);
+
           return {
-            orders: state.orders.map((o) =>
-              o.id === orderId ? { ...o, status, updatedAt: new Date().toISOString() } : o
-            ),
-            ingredients: newIngredients,
-            fridgeItems: newFridgeItems
+            orders: updatedOrders,
+            ingredients: updatedIngredients,
+            fridgeItems: updatedFridgeItems
           };
         }
 
+        const updatedOrders = state.orders.map((o) =>
+          o.id === orderId ? { ...o, status, updatedAt: new Date().toISOString() } : o
+        );
+        saveToLocalStorage('orders', updatedOrders);
+        syncOrdersToFirebase(updatedOrders);
+
         return {
-          orders: state.orders.map((o) =>
-            o.id === orderId ? { ...o, status, updatedAt: new Date().toISOString() } : o
-          ),
+          orders: updatedOrders,
         };
       }),
 
     updateIngredientStock: (ingredientId, quantity) =>
-      set((state) => ({
-        ingredients: state.ingredients.map((ing) =>
+      set((state) => {
+        const updatedIngredients = state.ingredients.map((ing) =>
           ing.id === ingredientId ? { ...ing, inStock: quantity } : ing
-        ),
-      })),
+        );
+        saveToLocalStorage('ingredients', updatedIngredients);
+        return { ingredients: updatedIngredients };
+      }),
+
+    deleteOrder: (orderId) =>
+      set((state) => {
+        const updatedOrders = state.orders.filter((o) => o.id !== orderId);
+        saveToLocalStorage('orders', updatedOrders);
+        syncOrdersToFirebase(updatedOrders);
+        return { orders: updatedOrders };
+      }),
 
     getFilteredDishes: () => {
       const { dishes, searchQuery, selectedCategory } = get();
@@ -639,9 +785,9 @@ ${orderDetails}
         addedDate: new Date().toISOString().split('T')[0],
       };
 
-      set((state) => ({
-        fridgeItems: [...state.fridgeItems, newItem],
-      }));
+      const updatedFridgeItems = [...get().fridgeItems, newItem];
+      set({ fridgeItems: updatedFridgeItems });
+      saveToLocalStorage('fridgeItems', updatedFridgeItems);
 
       if (newItem.ingredientId) {
         const ingredient = get().ingredients.find((i) => i.id === newItem.ingredientId);
@@ -654,11 +800,11 @@ ${orderDetails}
     updateFridgeItem: (id, updates) => {
       const oldItem = get().fridgeItems.find((item) => item.id === id);
       
-      set((state) => ({
-        fridgeItems: state.fridgeItems.map((item) =>
-          item.id === id ? { ...item, ...updates } : item
-        ),
-      }));
+      const updatedFridgeItems = get().fridgeItems.map((item) =>
+        item.id === id ? { ...item, ...updates } : item
+      );
+      set({ fridgeItems: updatedFridgeItems });
+      saveToLocalStorage('fridgeItems', updatedFridgeItems);
 
       if (oldItem?.ingredientId && updates.quantity !== undefined) {
         const ingredient = get().ingredients.find((i) => i.id === oldItem.ingredientId);
@@ -672,9 +818,9 @@ ${orderDetails}
     removeFridgeItem: (id) => {
       const item = get().fridgeItems.find((item) => item.id === id);
       
-      set((state) => ({
-        fridgeItems: state.fridgeItems.filter((item) => item.id !== id),
-      }));
+      const updatedFridgeItems = get().fridgeItems.filter((item) => item.id !== id);
+      set({ fridgeItems: updatedFridgeItems });
+      saveToLocalStorage('fridgeItems', updatedFridgeItems);
 
       if (item?.ingredientId) {
         const ingredient = get().ingredients.find((i) => i.id === item.ingredientId);
@@ -699,12 +845,12 @@ ${orderDetails}
         }
       });
 
-      set((state) => ({
-        ingredients: state.ingredients.map((ing) => ({
-          ...ing,
-          inStock: ingredientStockMap.get(ing.id) || ing.inStock,
-        })),
+      const updatedIngredients = ingredients.map((ing) => ({
+        ...ing,
+        inStock: ingredientStockMap.get(ing.id) || ing.inStock,
       }));
+      set({ ingredients: updatedIngredients });
+      saveToLocalStorage('ingredients', updatedIngredients);
     },
 
     sendNotification: async (userId: string, title: string, content: string) => {

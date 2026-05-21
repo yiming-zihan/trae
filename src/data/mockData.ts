@@ -28,19 +28,19 @@ export const mockIngredients: Ingredient[] = [
   { id: 'i25', name: '鱼肉', unit: '克', quantity: 500, inStock: 200 },
   { id: 'i26', name: '牛蛙', unit: '只', quantity: 5, inStock: 2 },
   { id: 'i27', name: '蒜蓉', unit: '克', quantity: 100, inStock: 50 },
-  { id: 'i28', name: '猪耳朵', unit: '个', quantity: 4, inStock: 0 },
-  { id: 'i29', name: '干豆腐', unit: '张', quantity: 20, inStock: 0 },
-  { id: 'i30', name: '花生米', unit: '克', quantity: 200, inStock: 0 },
-  { id: 'i31', name: '扇贝', unit: '个', quantity: 12, inStock: 0 },
-  { id: 'i32', name: '小龙虾', unit: '斤', quantity: 3, inStock: 0 },
-  { id: 'i33', name: '三文鱼', unit: '克', quantity: 400, inStock: 0 },
-  { id: 'i34', name: '鸭头', unit: '个', quantity: 8, inStock: 0 },
-  { id: 'i35', name: '羊排', unit: '块', quantity: 6, inStock: 0 },
-  { id: 'i36', name: '意面', unit: '包', quantity: 2, inStock: 0 },
-  { id: 'i37', name: '大樱桃', unit: '斤', quantity: 2, inStock: 0 },
-  { id: 'i38', name: '串茄', unit: '串', quantity: 10, inStock: 0 },
-  { id: 'i39', name: '苹果汁', unit: '瓶', quantity: 2, inStock: 0 },
-  { id: 'i40', name: '鲜打扎啤', unit: '升', quantity: 5, inStock: 0 },
+  { id: 'i28', name: '猪耳朵', unit: '个', quantity: 4, inStock: 2 },
+  { id: 'i29', name: '干豆腐', unit: '张', quantity: 20, inStock: 10 },
+  { id: 'i30', name: '花生米', unit: '克', quantity: 200, inStock: 100 },
+  { id: 'i31', name: '扇贝', unit: '个', quantity: 12, inStock: 6 },
+  { id: 'i32', name: '小龙虾', unit: '斤', quantity: 3, inStock: 2 },
+  { id: 'i33', name: '三文鱼', unit: '片', quantity: 8, inStock: 6 },
+  { id: 'i34', name: '鸭头', unit: '个', quantity: 8, inStock: 4 },
+  { id: 'i35', name: '羊排', unit: '块', quantity: 6, inStock: 3 },
+  { id: 'i36', name: '意面', unit: '包', quantity: 2, inStock: 1 },
+  { id: 'i37', name: '大樱桃', unit: '斤', quantity: 2, inStock: 1 },
+  { id: 'i38', name: '串茄', unit: '盒', quantity: 2, inStock: 1 },
+  { id: 'i39', name: '苹果汁', unit: '瓶', quantity: 2, inStock: 1 },
+  { id: 'i40', name: '鲜打扎啤', unit: '升', quantity: 5, inStock: 2 },
 ];
 
 export const mockDishes: Dish[] = [
@@ -235,8 +235,8 @@ export const mockDishes: Dish[] = [
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Chinese%20braised%20pork%20ear%20platter%20with%20dried%20tofu%20and%20peanuts%20on%20white%20plate&image_size=landscape_4_3',
     ingredients: [
       { ingredientId: 'i28', amount: 2 },
-      { ingredientId: 'i29', amount: 10 },
-      { ingredientId: 'i30', amount: 100 },
+      { ingredientId: 'i29', amount: 5 },
+      { ingredientId: 'i30', amount: 50 },
       { ingredientId: 'i27', amount: 20 },
     ],
   },
@@ -275,7 +275,7 @@ export const mockDishes: Dish[] = [
     description: '挪威进口三文鱼，厚切刺身，入口即化',
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=thick%20cut%20salmon%20sashimi%20on%20white%20plate%20fresh%20Japanese%20style&image_size=landscape_4_3',
     ingredients: [
-      { ingredientId: 'i33', amount: 300 },
+      { ingredientId: 'i33', amount: 4 },
     ],
   },
   {
@@ -328,7 +328,7 @@ export const mockDishes: Dish[] = [
     description: '迷你小番茄，酸甜可口，健康美味',
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cherry%20tomatoes%20on%20vine%20fresh%20red%20mini%20tomatoes&image_size=landscape_4_3',
     ingredients: [
-      { ingredientId: 'i38', amount: 5 },
+      { ingredientId: 'i38', amount: 1 },
     ],
   },
   {
