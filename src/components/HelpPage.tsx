@@ -116,7 +116,8 @@ export function HelpPage() {
       <div className="max-w-4xl mx-auto px-4">
         <button
           onClick={() => window.history.back()}
-          className="mb-6 flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+          className="mb-6 flex items-center gap-2 text-gray-400 hover:text-white transition-all duration-200 hover:pl-1 active:scale-95 cursor-pointer"
+          style={{ zIndex: 100 }}
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
