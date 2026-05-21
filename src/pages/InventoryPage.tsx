@@ -242,8 +242,8 @@ export function InventoryPage({ onNavigateToPage }: InventoryPageProps) {
                     </div>
                   </div>
 
-                  {/* 移动端卡片式布局 */}
-                  <div className="grid gap-3">
+                  {/* 紧凑网格布局 */}
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                     {needToBuy.map((ingredient, index) => {
                       const ingredientData = ingredients.find(i => i.name === ingredient.name);
                       const purchased = isPurchased(ingredient.name);
@@ -251,43 +251,37 @@ export function InventoryPage({ onNavigateToPage }: InventoryPageProps) {
                       return (
                         <div 
                           key={ingredient.name} 
-                          className={`p-3 rounded-xl border ${
+                          className={`p-2.5 rounded-lg border transition-all ${
                             purchased 
                               ? 'bg-secondary-500/10 border-secondary-500/20' 
-                              : 'bg-yellow-500/5 border-dark-600/30'
+                              : 'bg-dark-700/50 border-dark-600/30 hover:border-yellow-500/30'
                           }`}
                           style={{ animationDelay: `${index * 30}ms` }}
                         >
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              {purchased ? (
-                                <>
-                                  <CheckCircle className="w-5 h-5 text-secondary-400" />
-                                  <span className="font-medium text-secondary-400 line-through">{ingredient.name}</span>
-                                </>
-                              ) : (
-                                <>
-                                  <XCircle className="w-5 h-5 text-red-400" />
-                                  <span className="font-medium text-white">{ingredient.name}</span>
-                                </>
-                              )}
-                            </div>
-                            <div className="text-right">
-                              <p className={`font-semibold text-sm ${purchased ? 'text-secondary-400' : 'text-red-400'}`}>
-                                {purchased ? '已采购 ✓' : `需采购 ${ingredient.toBuy}${ingredient.unit}`}
-                              </p>
-                              <p className="text-gray-500 text-xs">
-                                库存: {ingredient.inStock}
-                              </p>
-                            </div>
+                          <div className="flex items-start gap-1.5 mb-1.5">
+                            {purchased ? (
+                              <CheckCircle className="w-3.5 h-3.5 text-secondary-400 flex-shrink-0 mt-0.5" />
+                            ) : (
+                              <XCircle className="w-3.5 h-3.5 text-red-400 flex-shrink-0 mt-0.5" />
+                            )}
+                            <span className={`text-sm font-medium truncate flex-1 ${purchased ? 'text-secondary-400 line-through' : 'text-white'}`}>
+                              {ingredient.name}
+                            </span>
+                          </div>
+                          
+                          <div className="flex items-center justify-between text-xs">
+                            <span className={`font-semibold ${purchased ? 'text-secondary-400' : 'text-red-400'}`}>
+                              {purchased ? '已采购' : `${ingredient.toBuy}${ingredient.unit}`}
+                            </span>
+                            <span className="text-gray-500">库存:{ingredient.inStock}</span>
                           </div>
                           
                           {!purchased && ingredientData && (
                             <button
                               onClick={() => handlePurchase(ingredient.name, ingredientData.id, ingredient.toBuy, ingredient.unit)}
-                              className="mt-3 w-full py-2 bg-secondary-500/20 hover:bg-secondary-500/30 text-secondary-400 rounded-lg font-medium text-sm transition-all"
+                              className="mt-2 w-full py-1.5 bg-secondary-500/20 hover:bg-secondary-500/30 text-secondary-400 rounded-md font-medium text-xs transition-all"
                             >
-                              标记为已采购
+                              采购
                             </button>
                           )}
                         </div>
