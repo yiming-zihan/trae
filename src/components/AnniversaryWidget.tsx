@@ -55,13 +55,25 @@ export function AnniversaryWidget() {
 
   const getCountdownDays = (dateStr: string) => {
     const [year, month, day] = dateStr.split('-').map(Number);
-    const nextDate = new Date(now.getFullYear(), month - 1, day);
     
-    if (nextDate < now) {
+    // 创建今天的日期（忽略时间）
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    // 创建今年的纪念日日期
+    const thisYearDate = new Date(now.getFullYear(), month - 1, day);
+    
+    // 如果今天就是纪念日，返回0
+    if (today.getTime() === thisYearDate.getTime()) {
       return 0;
     }
     
-    const diff = Math.ceil((nextDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+    // 如果今年的纪念日已经过了，计算到明年的
+    let targetDate = thisYearDate;
+    if (thisYearDate < today) {
+      targetDate = new Date(now.getFullYear() + 1, month - 1, day);
+    }
+    
+    // 计算天数差
+    const diff = Math.ceil((targetDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
     return diff;
   };
 
