@@ -2,16 +2,31 @@ import { db } from './config';
 import { ref, set, get, onValue, update, remove } from 'firebase/database';
 import { Ingredient, Dish, Order, FridgeItem, User } from '@/types';
 
-const DATA_PATH = 'zihan-kitchen';
+const DATA_PATH = '';
 
 export const firebaseService = {
   saveIngredients: async (ingredients: Ingredient[]) => {
-    await set(ref(db, `${DATA_PATH}/ingredients`), ingredients);
+    try {
+      console.log('📤 Saving ingredients to Firebase:', ingredients);
+      await set(ref(db, `${DATA_PATH}/ingredients`), ingredients);
+      console.log('✅ Ingredients saved successfully');
+    } catch (error) {
+      console.error('❌ Failed to save ingredients to Firebase:', error);
+      throw error;
+    }
   },
 
   loadIngredients: async (): Promise<Ingredient[]> => {
-    const snapshot = await get(ref(db, `${DATA_PATH}/ingredients`));
-    return snapshot.exists() ? snapshot.val() : [];
+    try {
+      console.log('📥 Loading ingredients from Firebase...');
+      const snapshot = await get(ref(db, `${DATA_PATH}/ingredients`));
+      const ingredients = snapshot.exists() ? snapshot.val() : [];
+      console.log('✅ Ingredients loaded:', ingredients);
+      return ingredients;
+    } catch (error) {
+      console.error('❌ Failed to load ingredients from Firebase:', error);
+      return [];
+    }
   },
 
   saveDishes: async (dishes: Dish[]) => {
@@ -24,21 +39,51 @@ export const firebaseService = {
   },
 
   saveOrders: async (orders: Order[]) => {
-    await set(ref(db, `${DATA_PATH}/orders`), orders);
+    try {
+      console.log('📤 Saving orders to Firebase:', orders);
+      await set(ref(db, `${DATA_PATH}/orders`), orders);
+      console.log('✅ Orders saved successfully');
+    } catch (error) {
+      console.error('❌ Failed to save orders to Firebase:', error);
+      throw error;
+    }
   },
 
   loadOrders: async (): Promise<Order[]> => {
-    const snapshot = await get(ref(db, `${DATA_PATH}/orders`));
-    return snapshot.exists() ? snapshot.val() : [];
+    try {
+      console.log('📥 Loading orders from Firebase...');
+      const snapshot = await get(ref(db, `${DATA_PATH}/orders`));
+      const orders = snapshot.exists() ? snapshot.val() : [];
+      console.log('✅ Orders loaded:', orders);
+      return orders;
+    } catch (error) {
+      console.error('❌ Failed to load orders from Firebase:', error);
+      return [];
+    }
   },
 
   saveFridgeItems: async (fridgeItems: FridgeItem[]) => {
-    await set(ref(db, `${DATA_PATH}/fridgeItems`), fridgeItems);
+    try {
+      console.log('📤 Saving fridge items to Firebase:', fridgeItems);
+      await set(ref(db, `${DATA_PATH}/fridgeItems`), fridgeItems);
+      console.log('✅ Fridge items saved successfully');
+    } catch (error) {
+      console.error('❌ Failed to save fridge items to Firebase:', error);
+      throw error;
+    }
   },
 
   loadFridgeItems: async (): Promise<FridgeItem[]> => {
-    const snapshot = await get(ref(db, `${DATA_PATH}/fridgeItems`));
-    return snapshot.exists() ? snapshot.val() : [];
+    try {
+      console.log('📥 Loading fridge items from Firebase...');
+      const snapshot = await get(ref(db, `${DATA_PATH}/fridgeItems`));
+      const fridgeItems = snapshot.exists() ? snapshot.val() : [];
+      console.log('✅ Fridge items loaded:', fridgeItems);
+      return fridgeItems;
+    } catch (error) {
+      console.error('❌ Failed to load fridge items from Firebase:', error);
+      return [];
+    }
   },
 
   saveUsers: async (users: User[]) => {
@@ -61,25 +106,55 @@ export const firebaseService = {
 
   subscribeToOrders: (callback: (orders: Order[]) => void) => {
     const ordersRef = ref(db, `${DATA_PATH}/orders`);
+    console.log('🔍 Subscribing to orders at:', `${DATA_PATH}/orders`);
+    
     onValue(ordersRef, (snapshot) => {
-      const orders = snapshot.exists() ? snapshot.val() : [];
-      callback(orders);
+      try {
+        const orders = snapshot.exists() ? snapshot.val() : [];
+        console.log('📦 Orders snapshot received:', orders);
+        callback(orders);
+      } catch (error) {
+        console.error('❌ Error in orders subscription:', error);
+        callback([]);
+      }
+    }, (error) => {
+      console.error('❌ Firebase orders subscription error:', error);
     });
   },
 
   subscribeToIngredients: (callback: (ingredients: Ingredient[]) => void) => {
     const ingredientsRef = ref(db, `${DATA_PATH}/ingredients`);
+    console.log('🔍 Subscribing to ingredients at:', `${DATA_PATH}/ingredients`);
+    
     onValue(ingredientsRef, (snapshot) => {
-      const ingredients = snapshot.exists() ? snapshot.val() : [];
-      callback(ingredients);
+      try {
+        const ingredients = snapshot.exists() ? snapshot.val() : [];
+        console.log('📦 Ingredients snapshot received:', ingredients);
+        callback(ingredients);
+      } catch (error) {
+        console.error('❌ Error in ingredients subscription:', error);
+        callback([]);
+      }
+    }, (error) => {
+      console.error('❌ Firebase ingredients subscription error:', error);
     });
   },
 
   subscribeToFridgeItems: (callback: (fridgeItems: FridgeItem[]) => void) => {
     const fridgeRef = ref(db, `${DATA_PATH}/fridgeItems`);
+    console.log('🔍 Subscribing to fridge items at:', `${DATA_PATH}/fridgeItems`);
+    
     onValue(fridgeRef, (snapshot) => {
-      const fridgeItems = snapshot.exists() ? snapshot.val() : [];
-      callback(fridgeItems);
+      try {
+        const fridgeItems = snapshot.exists() ? snapshot.val() : [];
+        console.log('📦 Fridge items snapshot received:', fridgeItems);
+        callback(fridgeItems);
+      } catch (error) {
+        console.error('❌ Error in fridge items subscription:', error);
+        callback([]);
+      }
+    }, (error) => {
+      console.error('❌ Firebase fridge items subscription error:', error);
     });
   },
 };

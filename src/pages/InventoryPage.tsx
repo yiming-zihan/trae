@@ -1,6 +1,7 @@
 import { ShoppingCart, ChefHat, ClipboardList, ExternalLink, AlertTriangle, CheckCircle, XCircle, Package, ShoppingBag } from 'lucide-react';
 import { useMenuStore } from '@/store/menuStore';
 import { useState } from 'react';
+import { SyncTest } from '@/components/SyncTest';
 
 interface InventoryPageProps {
   onNavigateToPage?: (page: string) => void;
@@ -103,6 +104,8 @@ export function InventoryPage({ onNavigateToPage }: InventoryPageProps) {
   return (
     <div className="min-h-screen bg-pattern pt-20 pb-20">
       <div className="max-w-6xl mx-auto px-3 md:px-4">
+        <SyncTest />
+        
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
           <div>
             <h1 className="text-xl md:text-3xl font-bold text-white mb-1">采购与清单</h1>

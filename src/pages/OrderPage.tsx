@@ -45,12 +45,12 @@ export function OrderPage() {
   };
 
   return (
-    <div className="min-h-screen bg-pattern pt-20 pb-8">
+    <div className="min-h-screen bg-pattern pt-20 pb-8 md:pb-64">
       <div className="max-w-7xl mx-auto px-3 md:px-4">
         {!showSuccess ? (
           <>
             {/* 日期选择 - 手机端固定在顶部 */}
-            <div className="glass-card rounded-xl md:rounded-2xl p-3 md:p-6 mb-4 border border-dark-600/30 sticky top-20 z-40 bg-dark-800/95 backdrop-blur-xl">
+            <div className="glass-card rounded-xl md:rounded-2xl p-3 md:p-6 mb-4 border border-dark-600/30 md:static sticky md:sticky-auto top-20 z-30 bg-dark-800/95 backdrop-blur-xl">
               <div className="flex items-center gap-3 md:gap-4 mb-3">
                 <div className="w-10 h-10 md:w-14 md:h-14 gradient-bg rounded-lg md:rounded-2xl flex items-center justify-center shadow-lg shadow-primary-500/30">
                   <Calendar className="w-5 h-5 md:w-7 md:h-7 text-white" />
@@ -176,9 +176,9 @@ export function OrderPage() {
 
             {/* 已选菜品和下单 - 手机端固定在底部 */}
             {cart.length > 0 && (
-              <div className="fixed bottom-0 left-0 right-0 z-50 p-3 md:p-0">
+              <div className="fixed md:relative bottom-0 left-0 right-0 md:bottom-auto md:left-auto md:right-auto z-50 md:z-auto p-3 md:p-0">
                 <div className="max-w-7xl mx-auto">
-                  <div className="glass-card rounded-xl md:rounded-2xl border-t border-dark-600/30 bg-dark-800/95 backdrop-blur-xl">
+                  <div className="glass-card rounded-xl md:rounded-2xl border-t md:border border-dark-600/30 bg-dark-800/95 backdrop-blur-xl">
                     <div className="p-4 md:p-6">
                       <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
                         <div className="w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg md:rounded-2xl flex items-center justify-center shadow-lg">

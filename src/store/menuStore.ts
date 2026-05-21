@@ -457,91 +457,196 @@ export const useMenuStore = create<MenuStore>((set, get) => {
 
   initNotificationConfigs();
 
-  // Firebase 同步函数
-  const syncOrdersToFirebase = async (orders: Order[]) => {
-    try {
-      await firebaseService.saveOrders(orders);
-    } catch (error) {
-      console.warn('Failed to sync orders to Firebase:', error);
-    }
-  };
-
-  const syncIngredientsToFirebase = async (ingredients: Ingredient[]) => {
-    try {
-      await firebaseService.saveIngredients(ingredients);
-    } catch (error) {
-      console.warn('Failed to sync ingredients to Firebase:', error);
-    }
-  };
-
-  const syncFridgeItemsToFirebase = async (fridgeItems: FridgeItem[]) => {
-    try {
-      await firebaseService.saveFridgeItems(fridgeItems);
-    } catch (error) {
-      console.warn('Failed to sync fridge items to Firebase:', error);
-    }
-  };
+  // 标记是否已经从Firebase同步过
+  let hasSyncedFromFirebase = false;
+  // 标记Firebase是否可用
+  let firebaseAvailable = true;
 
   // 监听 Firebase 变化
   const subscribeToFirebaseUpdates = () => {
+    console.log('🔌 Setting up Firebase listeners...');
+    
     firebaseService.subscribeToOrders((orders) => {
-      set({ orders });
-      saveToLocalStorage('orders', orders);
+      console.log('📥 Firebase orders listener triggered:', orders);
+      if (Array.isArray(orders) && orders.length >= 0) {
+        set({ orders });
+        saveToLocalStorage('orders', orders);
+        console.log('✅ Orders synced from Firebase, count:', orders.length);
+      }
     });
 
     firebaseService.subscribeToIngredients((ingredients) => {
-      set({ ingredients });
-      saveToLocalStorage('ingredients', ingredients);
+      console.log('📥 Firebase ingredients listener triggered:', ingredients);
+      if (Array.isArray(ingredients) && ingredients.length >= 0) {
+        set({ ingredients });
+        saveToLocalStorage('ingredients', ingredients);
+        console.log('✅ Ingredients synced from Firebase, count:', ingredients.length);
+      }
     });
 
     firebaseService.subscribeToFridgeItems((fridgeItems) => {
-      set({ fridgeItems });
-      saveToLocalStorage('fridgeItems', fridgeItems);
+      console.log('📥 Firebase fridge items listener triggered:', fridgeItems);
+      if (Array.isArray(fridgeItems) && fridgeItems.length >= 0) {
+        set({ fridgeItems });
+        saveToLocalStorage('fridgeItems', fridgeItems);
+        console.log('✅ Fridge items synced from Firebase, count:', fridgeItems.length);
+      }
     });
+    
+    console.log('✅ Firebase listeners setup complete');
   };
 
-  // 从 Firebase 初始化数据
-  const initFromFirebase = async () => {
+  // 从 Firebase 同步数据（强制覆盖本地数据）
+  const forceSyncFromFirebase = async () => {
     try {
+      console.log('🔁 Forcing sync from Firebase...');
+      
       const [fbOrders, fbIngredients, fbFridgeItems] = await Promise.all([
         firebaseService.loadOrders(),
         firebaseService.loadIngredients(),
         firebaseService.loadFridgeItems(),
       ]);
 
-      if (fbOrders.length > 0) {
+      let hasChanges = false;
+
+      if (Array.isArray(fbOrders) && fbOrders.length > 0) {
         set({ orders: fbOrders });
         saveToLocalStorage('orders', fbOrders);
+        console.log('✅ Orders forced synced:', fbOrders.length);
+        hasChanges = true;
       }
-      if (fbIngredients.length > 0) {
+      
+      if (Array.isArray(fbIngredients) && fbIngredients.length > 0) {
         set({ ingredients: fbIngredients });
         saveToLocalStorage('ingredients', fbIngredients);
+        console.log('✅ Ingredients forced synced:', fbIngredients.length);
+        hasChanges = true;
       }
-      if (fbFridgeItems.length > 0) {
+      
+      if (Array.isArray(fbFridgeItems) && fbFridgeItems.length > 0) {
         set({ fridgeItems: fbFridgeItems });
         saveToLocalStorage('fridgeItems', fbFridgeItems);
+        console.log('✅ Fridge items forced synced:', fbFridgeItems.length);
+        hasChanges = true;
       }
 
-      // 如果 Firebase 为空，初始化数据
-      if (fbOrders.length === 0) {
-        await firebaseService.saveOrders(savedOrders);
-      }
-      if (fbIngredients.length === 0) {
-        await firebaseService.saveIngredients(savedIngredients);
-      }
-      if (fbFridgeItems.length === 0) {
-        await firebaseService.saveFridgeItems(savedFridgeItems);
-      }
-
-      // 开始监听
-      subscribeToFirebaseUpdates();
+      return hasChanges;
     } catch (error) {
-      console.warn('Failed to initialize from Firebase:', error);
+      console.error('❌ Failed to force sync from Firebase:', error);
+      return false;
     }
   };
 
-  // 延迟初始化 Firebase
-  setTimeout(initFromFirebase, 1000);
+  // 从 Firebase 初始化数据
+  const initFromFirebase = async () => {
+    try {
+      console.log('🚀 Initializing from Firebase...');
+      
+      // 先尝试加载数据（如果Firebase有数据，用Firebase的数据覆盖本地）
+      console.log('📥 First load from Firebase...');
+      const [fbOrders, fbIngredients, fbFridgeItems] = await Promise.all([
+        firebaseService.loadOrders(),
+        firebaseService.loadIngredients(),
+        firebaseService.loadFridgeItems(),
+      ]);
+
+      // 检查是否有数据
+      const hasOrders = Array.isArray(fbOrders) && fbOrders.length > 0;
+      const hasIngredients = Array.isArray(fbIngredients) && fbIngredients.length > 0;
+      const hasFridgeItems = Array.isArray(fbFridgeItems) && fbFridgeItems.length > 0;
+
+      if (hasOrders || hasIngredients || hasFridgeItems) {
+        firebaseAvailable = true;
+        
+        // 使用Firebase数据更新本地状态
+        if (hasOrders) {
+          console.log('📦 Found orders in Firebase:', fbOrders.length);
+          set({ orders: fbOrders });
+          saveToLocalStorage('orders', fbOrders);
+        }
+        
+        if (hasIngredients) {
+          console.log('📦 Found ingredients in Firebase:', fbIngredients.length);
+          set({ ingredients: fbIngredients });
+          saveToLocalStorage('ingredients', fbIngredients);
+        }
+        
+        if (hasFridgeItems) {
+          console.log('📦 Found fridge items in Firebase:', fbFridgeItems.length);
+          set({ fridgeItems: fbFridgeItems });
+          saveToLocalStorage('fridgeItems', fbFridgeItems);
+        }
+
+        // 设置监听
+        subscribeToFirebaseUpdates();
+        console.log('✅ Firebase sync is active');
+      } else {
+        // Firebase没有数据，尝试上传本地数据
+        try {
+          console.log('📤 Firebase empty, uploading local data...');
+          await Promise.all([
+            firebaseService.saveOrders(savedOrders),
+            firebaseService.saveIngredients(savedIngredients),
+            firebaseService.saveFridgeItems(savedFridgeItems),
+          ]);
+          firebaseAvailable = true;
+          subscribeToFirebaseUpdates();
+          console.log('✅ Local data uploaded to Firebase, sync is active');
+        } catch (uploadError) {
+          // 上传失败，可能是Firebase不可用
+          firebaseAvailable = false;
+          console.error('❌ Firebase is not available, falling back to localStorage:', uploadError);
+        }
+      }
+
+      hasSyncedFromFirebase = true;
+      console.log(firebaseAvailable ? '🎉 Firebase initialization complete' : '⚠️ Firebase unavailable, using localStorage only');
+    } catch (error) {
+      firebaseAvailable = false;
+      console.error('❌ Firebase initialization failed, using localStorage only:', error);
+    }
+  };
+
+  // 立即初始化 Firebase
+  initFromFirebase();
+
+  // 定期同步（每30秒检查一次）
+  setInterval(async () => {
+    if (hasSyncedFromFirebase) {
+      await forceSyncFromFirebase();
+    }
+  }, 30000);
+
+  // 暴露同步函数供外部使用
+  const syncOrdersToFirebase = async (orders: Order[]) => {
+    try {
+      console.log('📤 Syncing orders to Firebase:', orders.length);
+      await firebaseService.saveOrders(orders);
+      console.log('✅ Orders saved to Firebase');
+    } catch (error) {
+      console.error('❌ Failed to sync orders to Firebase:', error);
+    }
+  };
+
+  const syncIngredientsToFirebase = async (ingredients: Ingredient[]) => {
+    try {
+      console.log('📤 Syncing ingredients to Firebase:', ingredients.length);
+      await firebaseService.saveIngredients(ingredients);
+      console.log('✅ Ingredients saved to Firebase');
+    } catch (error) {
+      console.error('❌ Failed to sync ingredients to Firebase:', error);
+    }
+  };
+
+  const syncFridgeItemsToFirebase = async (fridgeItems: FridgeItem[]) => {
+    try {
+      console.log('📤 Syncing fridge items to Firebase:', fridgeItems.length);
+      await firebaseService.saveFridgeItems(fridgeItems);
+      console.log('✅ Fridge items saved to Firebase');
+    } catch (error) {
+      console.error('❌ Failed to sync fridge items to Firebase:', error);
+    }
+  };
 
   return {
     dishes: mockDishes,
@@ -728,6 +833,7 @@ ${orderDetails}
           ing.id === ingredientId ? { ...ing, inStock: quantity } : ing
         );
         saveToLocalStorage('ingredients', updatedIngredients);
+        syncIngredientsToFirebase(updatedIngredients);
         return { ingredients: updatedIngredients };
       }),
 
@@ -788,6 +894,7 @@ ${orderDetails}
       const updatedFridgeItems = [...get().fridgeItems, newItem];
       set({ fridgeItems: updatedFridgeItems });
       saveToLocalStorage('fridgeItems', updatedFridgeItems);
+      syncFridgeItemsToFirebase(updatedFridgeItems);
 
       if (newItem.ingredientId) {
         const ingredient = get().ingredients.find((i) => i.id === newItem.ingredientId);
@@ -805,6 +912,7 @@ ${orderDetails}
       );
       set({ fridgeItems: updatedFridgeItems });
       saveToLocalStorage('fridgeItems', updatedFridgeItems);
+      syncFridgeItemsToFirebase(updatedFridgeItems);
 
       if (oldItem?.ingredientId && updates.quantity !== undefined) {
         const ingredient = get().ingredients.find((i) => i.id === oldItem.ingredientId);
@@ -821,6 +929,7 @@ ${orderDetails}
       const updatedFridgeItems = get().fridgeItems.filter((item) => item.id !== id);
       set({ fridgeItems: updatedFridgeItems });
       saveToLocalStorage('fridgeItems', updatedFridgeItems);
+      syncFridgeItemsToFirebase(updatedFridgeItems);
 
       if (item?.ingredientId) {
         const ingredient = get().ingredients.find((i) => i.id === item.ingredientId);
